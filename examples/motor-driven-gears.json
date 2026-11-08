@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "name": "Motor-driven gears",
+  "gravityOn": false,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "driver",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Driving gear",
+      "x": -1,
+      "y": 0,
+      "radius": 1,
+      "mass": 2,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "support": {
+        "kind": "pinned",
+        "x": -1,
+        "y": 0
+      },
+      "inertia": 1
+    },
+    {
+      "id": "driven",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Driven gear",
+      "x": 2,
+      "y": 0,
+      "radius": 2,
+      "mass": 2,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "support": {
+        "kind": "pinned",
+        "x": 2,
+        "y": 0
+      },
+      "inertia": 4
+    }
+  ],
+  "bars": [
+    {
+      "id": "gear1",
+      "type": "bar",
+      "joint": "gear",
+      "name": "Gear 1",
+      "a": "driver",
+      "b": "driven",
+      "ratio": -0.5,
+      "phase": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "length": 0,
+      "collideConnected": false
+    }
+  ],
+  "forces": [
+    {
+      "id": "driveMotor",
+      "type": "force",
+      "kind": "motor",
+      "name": "Motor 1",
+      "target": "driver",
+      "speed": 2,
+      "maxTorque": 1,
+      "enabled": true,
+      "fx": 0,
+      "fy": 0,
+      "local": {
+        "x": 0,
+        "y": 0
+      },
+      "bodyFrame": false
+    }
+  ],
+  "springs": [],
+  "monitor": "driveMotor",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "omegaA",
+      "target": "driver",
+      "variable": "body:driver:omega",
+      "offset": {
+        "x": -120,
+        "y": 110
+      },
+      "precision": 3,
+      "caption": "ωA"
+    },
+    {
+      "id": "omegaB",
+      "target": "driven",
+      "variable": "body:driven:omega",
+      "offset": {
+        "x": 15,
+        "y": 145
+      },
+      "precision": 3,
+      "caption": "ωB"
+    },
+    {
+      "id": "motormomentA",
+      "target": "driveMotor",
+      "variable": "load:driveMotor:momentA",
+      "offset": {
+        "x": -170,
+        "y": -170
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "motorwork",
+      "target": "driveMotor",
+      "variable": "load:driveMotor:work",
+      "offset": {
+        "x": 60,
+        "y": -115
+      },
+      "precision": 3,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": 0.8,
+    "y": 0,
+    "scale": 65
+  },
+  "solverPrecision": "high"
+}

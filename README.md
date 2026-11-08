@@ -114,8 +114,20 @@ Collision impulses include angular response and respect linear constraints. Conc
 - Distance monitors measure from the world origin. The energy readout and CSV energy column refer to the complete system.
 - Spring damping dissipates mechanical energy; this energy is not tracked as heat. Damping acts along each spring, rather than as ambient air resistance.
 - The fixed timestep is unsuitable for arbitrarily stiff springs or very small masses. Reduce stiffness or increase mass if motion becomes unstable. Numerical energy is approximate.
-- Point masses have no angular motion or collision geometry. Applied forces, strings and fixed/movable pulleys are implemented. Ideal gear transmissions are implemented; motors, mathematical expressions and visual programming remain future work.
+- Point masses have no angular motion or collision geometry. Applied forces, strings and fixed/movable pulleys are implemented. Ideal gear transmissions and torque-limited motors are implemented; mathematical expressions and visual programming remain future work.
 - JSON imports are validated and limited to 200 bodies, 400 each of springs/bars/strings/applied forces, and 2 MB.
+
+## Torque-limited speed motors
+
+Choose **Motor** and click a solid. Set **Target speed (rad/s)** and **Maximum torque (N·m)** in Properties, or uncheck **Motor enabled**. Positive speed is counterclockwise. A zero target brakes toward rest; zero maximum torque or disabling releases the shaft. The default target is 1 rad/s with a 1 N·m limit. Motors apply a pure torque about the center with no resultant force. They reference the ground; their housing receives the opposite torque. Add supports separately to position the axle. This is an ideal mechanical controller, with no electrical, thermal or efficiency model.
+
+Each integration substep uses bounded angular impulses projected through the connected joints, including gears and unilateral strings. The controller accounts for the inertia of the mechanism and caps its impulse to avoid driving past the target. Other loads and collisions can still disturb the shaft between controller solves. If the mechanism prevents rotation, the motor applies its capped torque against the constraint and does zero work. Competing motors are resolved in forward/reverse order in the two half-steps; finite-step torque sharing is approximate. A prescribed angular velocity is never imposed by overwriting the shaft velocity.
+
+The purple curved **M** marker selects the motor. Its label gives target speed; Properties and monitors report actual shaft speed, speed error, measured torque, mechanical power and cumulative work. Work is signed: acceleration supplies energy, braking can remove it. Each impulse records `J × (ωbefore + ωafter) / 2`, the mechanical energy it transfers to the constrained system. Torque and power average over the latest 1/240 s physics step; work accumulates from the initial conditions. Motor data follow rewind/replay and resume from the recorded endpoint. CSV exports these quantities; every quantity can be a plot axis or line. Copy/paste, undo, Save As/Open and deletion work with motors. Saved initial conditions retain settings, not simulated work or controller state. Files use `kind: "motor"`, `speed` in rad/s (−1000 to 1000), `maxTorque` (0 to 100000 N·m), and `enabled` in the existing applied-load collection.
+
+Choose **Examples → Load motor-driven gears** (**Ejemplos → Cargar engranajes con motor**) or open `examples/motor-driven-gears.json`. A 1 N·m motor accelerates the gear pair with effective inertia 2 kg·m² toward 2 rad/s on A and −1 rad/s on B. It reaches the target after 4 s, supplying 4 J, then supplies zero torque in this unloaded ideal example. Attached monitors show both shaft speeds, motor torque and cumulative work. Compare motor work and mechanical energy as two lines on one plot; both start at zero here.
+
+`node tests/motors.cjs` covers analytical ramp/target capture, signed braking and work, released shafts, fixed/geared stall reactions, a resisting torque, unilateral string release, retry accounting and validation. `node tests/motors-ui.cjs` covers tools/fields, picking, persistence, clipboard/undo, work recording/replay/resume/reset, plots/CSV and Spanish controls. Browser/device qualification remains listed in BROWSER_QA.md.
 
 ## Ideal gears
 
@@ -147,7 +159,7 @@ Only the edited mechanism is assembled; unrelated unfinished connections remain 
 
 `tests/joint-editing.cjs` verifies constraints after each intermediate pointer event, hinge rotation and resizing, bar/string limits, unequal-mass pointer tracking, roller guides, blocked mechanisms, inspector edits, disconnected mechanisms, support relocation, velocity preservation, undo/redo and the next simulation step.
 
-Hinges, moving-body sliders, welded joints, pure applied torques and separate static/kinetic friction are implemented. Ideal gear transmissions are also implemented. The next planned feature is motors, followed by safe formulas, visual programming and the remaining browser/device qualification.
+Hinges, moving-body sliders, welded joints, pure applied torques, separate static/kinetic friction, ideal gear transmissions and torque-limited motors are implemented. Next are safe formulas, visual programming and the remaining browser/device qualification.
 
 ## Sliders on moving bodies
 
@@ -181,7 +193,7 @@ Choose **Applied torque** (**Torque aplicado**) and click a solid. The new load 
 
 A free solid obeys **α = τ/I** while its center continues its translational motion. A center pin permits rotation; a fixed body supplies the opposite support torque and stays stationary. Hinges, sliders, welds and collisions participate in the same constrained solve as other loads. A pure couple is independent of attachment location and body orientation, so resizing or rotating the target does not change its value. Multiple torques and forces add algebraically. Editing a load restores initial conditions and clears the old recording.
 
-Attached monitors and plots can display **Applied torque (N·m)** and instantaneous **Power (W)**, with **P = τω**. Power is signed: a torque opposing rotation removes kinetic energy until the rotation reverses. Replay uses the angular velocity of the recorded frame. Body monitors still provide angle, angular velocity, angular momentum and kinetic energy. The energy diagnostics identify work by applied torques; a changing mechanical energy is expected under external work. This feature does not yet accumulate a work history or act as a speed-controlled motor.
+Attached monitors and plots can display **Applied torque (N·m)** and instantaneous **Power (W)**, with **P = τω**. Power is signed: a torque opposing rotation removes kinetic energy until the rotation reverses. Replay uses the angular velocity of the recorded frame. Body monitors still provide angle, angular velocity, angular momentum and kinetic energy. The energy diagnostics identify work by applied torques; a changing mechanical energy is expected under external work. Pure applied torques do not accumulate work history. Use the separate Motor tool for speed control and cumulative motor work.
 
 Torque loads copy/paste, duplicate, delete/undo, Save As/Open and replay with their target bodies and readouts. They share the existing 400-load `forces` collection. A version 1 entry has `type: "force"`, `kind: "torque"`, a signed `torque` in N·m, its solid `target`, canonical zero `fx`, `fy` and local coordinates, and `bodyFrame: false`. Existing force files remain compatible. The measurements CSV for a torque source exports time, applied torque, target angular velocity, angular momentum about COM, power and angle.
 
