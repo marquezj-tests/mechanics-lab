@@ -404,3 +404,7 @@ Press **Step** or **Run** to populate the acceleration and tension readouts. Eac
 Acceleration x/y variables are measured from the velocity change over the last physics step, including constraint/contact impulses. They are recorded alongside position and velocity, are selectable as plot axes or attached readouts, and are included in body CSV exports. The string solver includes moving-guide gradients in the same coupled system as its endpoint bodies, including multiple moving pulleys and ropes attached to their axles.
 
 `node tests/movable-pulleys.cjs` checks both analytical examples, the 2:1 displacement/velocity ratio, tension and axle loads, finite-radius guide gradients, travel-stop stability, axle-to-string connections, free 2D momentum and energy, multiple moving guides, and serialization. `tests/solids.cjs` checks the new icon tool, point-mass conversion, axle mode changes, axle attachment controls, both example files, recorded acceleration/replay and copy/paste.
+
+## License
+
+Copyright 2026 Nacho Marquez. Licensed under the [Apache License 2.0](LICENSE). The standalone HTML file also includes the complete license.
