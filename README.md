@@ -135,7 +135,7 @@ Only the edited mechanism is assembled; unrelated unfinished connections remain 
 
 `tests/joint-editing.cjs` verifies constraints after each intermediate pointer event, hinge rotation and resizing, bar/string limits, unequal-mass pointer tracking, roller guides, blocked mechanisms, inspector edits, disconnected mechanisms, support relocation, velocity preservation, undo/redo and the next simulation step.
 
-Hinges, moving-body sliders and welded joints are implemented. Pure applied torques and separate static/kinetic friction remain in this stage of the roadmap, followed by gears/motors, safe formulas, visual programming and the remaining browser/device qualification.
+Hinges, moving-body sliders, welded joints and pure applied torques are implemented. Separate static/kinetic friction remains in this stage of the roadmap, followed by gears/motors, safe formulas, visual programming and the remaining browser/device qualification.
 
 ## Sliders on moving bodies
 
@@ -162,6 +162,20 @@ Welded clusters ignore internal collisions by default, including overlapping pie
 Choose **Examples → Load hinge vs weld** (**Ejemplos → Cargar articulación vs soldadura**) or open `examples/hinge-vs-weld.json`. Each experiment has two uniform 1 kg beams, each 2 m × 0.2 m, with A pinned at its center and B attached to its right end. Gravity is off, both pairs start at rest, and a constant 2 N downward force acts at B’s outer end. Only the connecting joint differs. The hinged pair changes relative angle and transmits no joint couple. The welded pair keeps zero relative angle and transmits a couple; its initial angular acceleration is **−6 / (4 + 2 × 0.3366667) ≈ −1.28388 rad/s²**. Moving readouts compare relative angle and joint couple. Reset repeats the comparison.
 
 `tests/welds.cjs` checks force/couple equilibrium, analytical rigid-assembly acceleration, unequal-mass off-center momentum/angular momentum/energy, elastic contact/support impulses, welded-cluster collision exclusion, conflicting constraints, comparison measurements and schema validation. `tests/welds-ui.cjs` covers shared-point creation, solid-only attachments, angle/geometry edits, clipboard/persistence/undo, rendering/picking, replay, CSV and both languages.
+
+## Directly applied torque
+
+Choose **Applied torque** (**Torque aplicado**) and click a solid. The new load is a pure couple of +1 N·m, with zero resultant force. A positive value turns counterclockwise; a negative value turns clockwise. Select the curved arrow, including its arc, to edit **Torque (N·m)** in Properties. Zero is valid. Its arrow indicates sign, with a fixed screen size; it does not encode magnitude by length. Edit the scalar value in Properties rather than dragging the arrow. Point masses have no rotational degree of freedom and cannot receive this load. Off-center applied forces remain available separately.
+
+A free solid obeys **α = τ/I** while its center continues its translational motion. A center pin permits rotation; a fixed body supplies the opposite support torque and stays stationary. Hinges, sliders, welds and collisions participate in the same constrained solve as other loads. A pure couple is independent of attachment location and body orientation, so resizing or rotating the target does not change its value. Multiple torques and forces add algebraically. Editing a load restores initial conditions and clears the old recording.
+
+Attached monitors and plots can display **Applied torque (N·m)** and instantaneous **Power (W)**, with **P = τω**. Power is signed: a torque opposing rotation removes kinetic energy until the rotation reverses. Replay uses the angular velocity of the recorded frame. Body monitors still provide angle, angular velocity, angular momentum and kinetic energy. The energy diagnostics identify work by applied torques; a changing mechanical energy is expected under external work. This feature does not yet accumulate a work history or act as a speed-controlled motor.
+
+Torque loads copy/paste, duplicate, delete/undo, Save As/Open and replay with their target bodies and readouts. They share the existing 400-load `forces` collection. A version 1 entry has `type: "force"`, `kind: "torque"`, a signed `torque` in N·m, its solid `target`, canonical zero `fx`, `fy` and local coordinates, and `bodyFrame: false`. Existing force files remain compatible. The measurements CSV for a torque source exports time, applied torque, target angular velocity, angular momentum about COM, power and angle.
+
+Choose **Examples → Load torque and inertia** (**Ejemplos → Cargar torque e inercia**) or open `examples/torque-and-inertia.json`. Two uniform 2 kg disks, of radii 1 m and 2 m, each receive +1 N·m and rotate about center pins with gravity off. Their inertias are **1 and 4 kg·m²**, so their angular accelerations are **1 and 0.25 rad/s²**. Both start at rest. At t = 1 s their angular velocities are 1 and 0.25 rad/s, angles are 0.5 and 0.125 rad, and angular momenta are equal at 1 kg·m²/s. Their kinetic energies equal the work **τΔθ**: 0.5 and 0.125 J. Attached readouts show torque and angular velocity. Add plots to compare the angular velocities, energies or load powers.
+
+`tests/torques.cjs` checks signed and zero torque, constant angular acceleration, zero net force, translational drift, angular momentum/work-energy, pin/fixed-support reactions, weld/slider transmission, recorded power and validation. `tests/torques-ui.cjs` covers solid-only creation, both arrow directions and arc picking, numeric values, monitor/plot defaults, geometry edits, clipboard/persistence/undo, replay/CSV, energy diagnostics and both languages.
 
 ## Solver precision
 

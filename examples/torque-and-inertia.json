@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "name": "Torque and rotational inertia",
+  "gravityOn": false,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "smallDisk",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Small disk",
+      "x": -3,
+      "y": 0,
+      "radius": 1,
+      "mass": 2,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "support": {
+        "kind": "pinned",
+        "x": -3,
+        "y": 0
+      },
+      "inertia": 1
+    },
+    {
+      "id": "largeDisk",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Large disk",
+      "x": 3,
+      "y": 0,
+      "radius": 2,
+      "mass": 2,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "support": {
+        "kind": "pinned",
+        "x": 3,
+        "y": 0
+      },
+      "inertia": 4
+    }
+  ],
+  "bars": [],
+  "forces": [
+    {
+      "id": "smallDiskTorque",
+      "type": "force",
+      "kind": "torque",
+      "name": "Torque 1",
+      "target": "smallDisk",
+      "torque": 1,
+      "fx": 0,
+      "fy": 0,
+      "local": {
+        "x": 0,
+        "y": 0
+      },
+      "bodyFrame": false
+    },
+    {
+      "id": "largeDiskTorque",
+      "type": "force",
+      "kind": "torque",
+      "name": "Torque 2",
+      "target": "largeDisk",
+      "torque": 1,
+      "fx": 0,
+      "fy": 0,
+      "local": {
+        "x": 0,
+        "y": 0
+      },
+      "bodyFrame": false
+    }
+  ],
+  "springs": [],
+  "monitor": "smallDiskTorque",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "smallDiskTorqueMonitor",
+      "target": "smallDiskTorque",
+      "variable": "load:smallDiskTorque:momentA",
+      "offset": {
+        "x": -80,
+        "y": -165
+      },
+      "precision": 2,
+      "caption": ""
+    },
+    {
+      "id": "smallDiskOmega",
+      "target": "smallDisk",
+      "variable": "body:smallDisk:omega",
+      "offset": {
+        "x": -80,
+        "y": 145
+      },
+      "precision": 3,
+      "caption": "ω"
+    },
+    {
+      "id": "largeDiskTorqueMonitor",
+      "target": "largeDiskTorque",
+      "variable": "load:largeDiskTorque:momentA",
+      "offset": {
+        "x": -80,
+        "y": -165
+      },
+      "precision": 2,
+      "caption": ""
+    },
+    {
+      "id": "largeDiskOmega",
+      "target": "largeDisk",
+      "variable": "body:largeDisk:omega",
+      "offset": {
+        "x": -80,
+        "y": 145
+      },
+      "precision": 3,
+      "caption": "ω"
+    }
+  ],
+  "view": {
+    "x": 0.5,
+    "y": 0,
+    "scale": 60
+  },
+  "solverPrecision": "high"
+}
