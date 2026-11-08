@@ -12,7 +12,7 @@ assert.equal(run('JSON.stringify(model)'),before);assert.equal(run('history.leng
 run('model.springs[0].damping=.2;model.forces=[{fx:1,fy:0}];drawSolverDiagnostics();');
 assert.match(node('energyNotes').textContent,/spring damping/);assert.match(node('energyNotes').textContent,/work by applied forces/);
 run('replaceExperiment(collisionExample());drawSolverDiagnostics();');assert.match(node('energyNotes').textContent,/contact friction/);assert.match(node('energyNotes').textContent,/inelastic impacts/);
-run('for(const b of model.bodies){b.friction=0;b.restitution=1;}');assert.equal(run('solverDiagnostics().causes.length'),0);
+run('for(const b of model.bodies){b.friction=0;b.staticFriction=0;b.kineticFriction=0;b.restitution=1;}');assert.equal(run('solverDiagnostics().causes.length'),0);
 run('replaceExperiment(barExample());model.bodies[1].x*=1.01;');assert.ok(run('solverDiagnostics().linkError')>0.001);
 run('replaceExperiment(atwoodExample(false));model.strings[0].length+=1;');assert.equal(run('solverDiagnostics().linkError'),0);assert.ok(run('solverDiagnostics().causes.includes("slack-to-taut string capture")'));
 run('model.strings[0].length-=2;');assert.ok(run('solverDiagnostics().linkError')>.99);

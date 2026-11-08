@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "name": "Bridge \u2014 fixed left support, free right end",
+  "snapGrid": true,
+  "name": "Bridge — fixed left support, free right end",
   "gravityOn": true,
   "gravity": 9.81,
-  "snapGrid": true,
   "bodies": [
     {
       "id": "anchor4",
@@ -61,14 +61,16 @@
     {
       "id": "mass21",
       "type": "mass",
-      "name": "Free right end",
+      "name": "Right end",
       "x": 2,
       "y": 0,
       "mass": 1,
       "vx": 0,
-      "vy": 0
+      "vy": 0,
+      "fixed": false
     }
   ],
+  "springs": [],
   "bars": [
     {
       "id": "bar10",
@@ -76,6 +78,7 @@
       "name": "Bar 1",
       "a": "anchor4",
       "b": "mass6",
+      "length": 2,
       "localA": {
         "x": 0,
         "y": 0
@@ -84,9 +87,8 @@
         "x": 0,
         "y": 0
       },
-      "length": 2,
       "collideConnected": false,
-      "supportAngleA": 0.0
+      "supportAngleA": 0
     },
     {
       "id": "bar11",
@@ -94,6 +96,7 @@
       "name": "Bar 2",
       "a": "mass6",
       "b": "mass7",
+      "length": 2,
       "localA": {
         "x": 0,
         "y": 0
@@ -102,7 +105,6 @@
         "x": 0,
         "y": 0
       },
-      "length": 2,
       "collideConnected": false
     },
     {
@@ -111,6 +113,7 @@
       "name": "Bar 5",
       "a": "mass9",
       "b": "mass8",
+      "length": 2,
       "localA": {
         "x": 0,
         "y": 0
@@ -119,7 +122,6 @@
         "x": 0,
         "y": 0
       },
-      "length": 2,
       "collideConnected": false
     },
     {
@@ -128,6 +130,7 @@
       "name": "Bar 6",
       "a": "mass8",
       "b": "anchor4",
+      "length": 2.8284271247461903,
       "localA": {
         "x": 0,
         "y": 0
@@ -136,7 +139,6 @@
         "x": 0,
         "y": 0
       },
-      "length": 2.8284271247461903,
       "collideConnected": false,
       "supportAngleB": -2.356194490192345
     },
@@ -146,6 +148,7 @@
       "name": "Bar 7",
       "a": "mass6",
       "b": "mass8",
+      "length": 2,
       "localA": {
         "x": 0,
         "y": 0
@@ -154,7 +157,6 @@
         "x": 0,
         "y": 0
       },
-      "length": 2,
       "collideConnected": false
     },
     {
@@ -163,6 +165,7 @@
       "name": "Bar 8",
       "a": "mass9",
       "b": "mass7",
+      "length": 2,
       "localA": {
         "x": 0,
         "y": 0
@@ -171,7 +174,6 @@
         "x": 0,
         "y": 0
       },
-      "length": 2,
       "collideConnected": false
     },
     {
@@ -180,6 +182,7 @@
       "name": "Bar 10",
       "a": "mass21",
       "b": "mass7",
+      "length": 2,
       "localA": {
         "x": 0,
         "y": 0
@@ -188,7 +191,6 @@
         "x": 0,
         "y": 0
       },
-      "length": 2,
       "collideConnected": false
     },
     {
@@ -197,6 +199,7 @@
       "name": "Bar 11",
       "a": "mass21",
       "b": "mass9",
+      "length": 2.8284271247461903,
       "localA": {
         "x": 0,
         "y": 0
@@ -205,7 +208,6 @@
         "x": 0,
         "y": 0
       },
-      "length": 2.8284271247461903,
       "collideConnected": false
     },
     {
@@ -214,6 +216,7 @@
       "name": "Bar 9",
       "a": "mass6",
       "b": "mass9",
+      "length": 2.8284271247461903,
       "localA": {
         "x": 0,
         "y": 0
@@ -222,7 +225,6 @@
         "x": 0,
         "y": 0
       },
-      "length": 2.8284271247461903,
       "collideConnected": false
     }
   ],
@@ -236,7 +238,7 @@
         "x": 0,
         "y": 0
       },
-      "fx": 6.858022075225178e-16,
+      "fx": 0,
       "fy": -10,
       "bodyFrame": false
     },
@@ -249,15 +251,11 @@
         "x": 0,
         "y": 0
       },
-      "fx": 6.735557395310443e-16,
+      "fx": 0,
       "fy": -10,
       "bodyFrame": false
     }
   ],
-  "springs": [],
-  "monitor": "mass6",
-  "monitorType": "xy",
-  "plotX": "time",
   "canvasMonitors": [
     {
       "id": "bridge-readout-1",
@@ -392,6 +390,10 @@
       "caption": "Tension"
     }
   ],
+  "plots": [],
+  "monitor": "mass6",
+  "monitorType": "xy",
+  "plotX": "time",
   "view": {
     "x": -1,
     "y": 0.8,

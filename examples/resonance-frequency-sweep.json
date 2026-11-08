@@ -10,7 +10,12 @@
       "type": "anchor",
       "name": "Anchor 1",
       "x": -2,
-      "y": 0
+      "y": 0,
+      "support": {
+        "kind": "pinned",
+        "x": -2,
+        "y": 0
+      }
     },
     {
       "id": "mass1",
@@ -57,7 +62,15 @@
       "b": "mass1",
       "k": 4,
       "rest": 2,
-      "damping": 0.08
+      "damping": 0.08,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     }
   ],
   "monitor": "mass1",

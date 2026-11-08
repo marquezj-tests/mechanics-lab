@@ -25,7 +25,9 @@
         "x": -1,
         "y": 0
       },
-      "inertia": 1
+      "inertia": 1,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "driven",
@@ -47,7 +49,9 @@
         "x": 2,
         "y": 0
       },
-      "inertia": 4
+      "inertia": 4,
+      "staticFriction": 0,
+      "kineticFriction": 0
     }
   ],
   "bars": [

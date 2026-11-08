@@ -26,7 +26,9 @@
         "x": -4,
         "y": 0
       },
-      "inertia": 0.3366666666666666
+      "inertia": 0.3366666666666666,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "hingedB",
@@ -44,7 +46,9 @@
       "omega": 0,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.3366666666666666
+      "inertia": 0.3366666666666666,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "weldedA",
@@ -67,7 +71,9 @@
         "x": 4,
         "y": 0
       },
-      "inertia": 0.3366666666666666
+      "inertia": 0.3366666666666666,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "weldedB",
@@ -85,7 +91,9 @@
       "omega": 0,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.3366666666666666
+      "inertia": 0.3366666666666666,
+      "staticFriction": 0,
+      "kineticFriction": 0
     }
   ],
   "bars": [

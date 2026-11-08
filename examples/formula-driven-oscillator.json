@@ -10,7 +10,12 @@
       "type": "anchor",
       "name": "Anchor 1",
       "x": -2,
-      "y": 0
+      "y": 0,
+      "support": {
+        "kind": "pinned",
+        "x": -2,
+        "y": 0
+      }
     },
     {
       "id": "mass1",
@@ -57,7 +62,15 @@
       "b": "mass1",
       "k": 4,
       "rest": 2,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     }
   ],
   "monitor": "mass1",
@@ -121,18 +134,23 @@
     {
       "id": "analytic",
       "name": "Analytical displacement",
-      "expression": "A/(4-(2*pi*f)^2)*(cos(2*pi*f*t)-cos(2*t))",
+      "expression": "A/(K-M*(2*pi*f)^2)*(cos(2*pi*f*t)-cos(sqrt(K/M)*t))",
       "unit": "m",
-      "bindings": {},
+      "bindings": {
+        "K": "spring:spring1:stiffness",
+        "M": "body:mass1:mass"
+      },
       "target": "mass1"
     },
     {
       "id": "error",
       "name": "Displacement error",
-      "expression": "u1-(A/(4-(2*pi*f)^2)*(cos(2*pi*f*t)-cos(2*t)))",
+      "expression": "u1-(A/(K-M*(2*pi*f)^2)*(cos(2*pi*f*t)-cos(sqrt(K/M)*t)))",
       "unit": "m",
       "bindings": {
-        "u1": "body:mass1:x"
+        "u1": "body:mass1:x",
+        "K": "spring:spring1:stiffness",
+        "M": "body:mass1:mass"
       },
       "target": "mass1"
     }

@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "name": "Forces and support reactions",
+  "gravityOn": true,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "left",
+      "type": "anchor",
+      "name": "Left support",
+      "x": -0.8,
+      "y": 1.5,
+      "support": {
+        "kind": "pinned",
+        "x": -0.8,
+        "y": 1.5
+      }
+    },
+    {
+      "id": "right",
+      "type": "anchor",
+      "name": "Right support",
+      "x": 0.8,
+      "y": 1.5,
+      "support": {
+        "kind": "pinned",
+        "x": 0.8,
+        "y": 1.5
+      }
+    },
+    {
+      "id": "beam",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Beam",
+      "x": 0,
+      "y": -0.5,
+      "mass": 2,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "width": 2,
+      "height": 0.4,
+      "restitution": 0,
+      "friction": 0.3,
+      "inertia": 0.6933333333333332,
+      "staticFriction": 0.3,
+      "kineticFriction": 0.3
+    }
+  ],
+  "bars": [
+    {
+      "id": "leftBar",
+      "type": "bar",
+      "name": "Left bar",
+      "a": "left",
+      "b": "beam",
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": -0.8,
+        "y": 0
+      },
+      "length": 2,
+      "collideConnected": false
+    },
+    {
+      "id": "rightBar",
+      "type": "bar",
+      "name": "Right bar",
+      "a": "right",
+      "b": "beam",
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0.8,
+        "y": 0
+      },
+      "length": 2,
+      "collideConnected": false
+    }
+  ],
+  "forces": [
+    {
+      "id": "load",
+      "type": "force",
+      "name": "Downward load",
+      "target": "beam",
+      "local": {
+        "x": 0.4,
+        "y": 0
+      },
+      "fx": 0,
+      "fy": -4,
+      "bodyFrame": false
+    }
+  ],
+  "springs": [],
+  "monitor": "leftBar",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "leftReaction",
+      "target": "left",
+      "variable": "support:left:fy",
+      "offset": {
+        "x": -185,
+        "y": -55
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "rightReaction",
+      "target": "right",
+      "variable": "support:right:fy",
+      "offset": {
+        "x": 35,
+        "y": -55
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "loadMoment",
+      "target": "load",
+      "variable": "load:load:momentA",
+      "offset": {
+        "x": 40,
+        "y": 45
+      },
+      "precision": 3,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": 0,
+    "y": 0,
+    "scale": 85
+  }
+}

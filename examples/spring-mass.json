@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "name": "Spring–mass experiment",
+  "gravityOn": false,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "anchor1",
+      "type": "anchor",
+      "name": "Anchor 1",
+      "x": -2,
+      "y": 0,
+      "support": {
+        "kind": "pinned",
+        "x": -2,
+        "y": 0
+      }
+    },
+    {
+      "id": "mass1",
+      "type": "mass",
+      "name": "Mass 1",
+      "x": 1.2,
+      "y": 0.65,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0.65
+    }
+  ],
+  "bars": [],
+  "forces": [],
+  "springs": [
+    {
+      "id": "spring1",
+      "type": "spring",
+      "name": "Spring 1",
+      "a": "anchor1",
+      "b": "mass1",
+      "k": 8,
+      "rest": 2,
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "monitor": "mass1",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "springMassSpeed",
+      "target": "mass1",
+      "variable": "body:mass1:speed",
+      "offset": {
+        "x": 30,
+        "y": -100
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "springAxialForce",
+      "target": "spring1",
+      "variable": "spring:spring1:tension",
+      "offset": {
+        "x": -80,
+        "y": -65
+      },
+      "precision": 3,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": 0,
+    "y": 0,
+    "scale": 85
+  }
+}

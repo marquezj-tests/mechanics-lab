@@ -1,60 +1,63 @@
 {
   "version": 1,
-  "snapGrid": false,
   "name": "Same beam and load: pinned vs fixed",
   "gravityOn": true,
   "gravity": 9.81,
+  "snapGrid": false,
   "bodies": [
     {
       "id": "pinnedBeam",
       "type": "mass",
+      "shape": "rectangle",
       "name": "Pinned beam",
       "x": -2,
       "y": 0,
       "mass": 2,
       "vx": 0,
       "vy": 0,
-      "shape": "rectangle",
       "angle": 0,
       "omega": 0,
-      "fixed": false,
-      "restitution": 0,
-      "friction": 0,
       "width": 2,
       "height": 0.2,
-      "inertia": 0.6733333333333332,
+      "restitution": 0,
+      "friction": 0,
+      "fixed": false,
       "support": {
         "kind": "pinned",
         "x": -2,
         "y": 0
-      }
+      },
+      "inertia": 0.6733333333333332,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "fixedBeam",
       "type": "mass",
+      "shape": "rectangle",
       "name": "Fixed beam",
       "x": 2,
       "y": 0,
       "mass": 2,
       "vx": 0,
       "vy": 0,
-      "shape": "rectangle",
       "angle": 0,
       "omega": 0,
-      "fixed": true,
-      "restitution": 0,
-      "friction": 0,
       "width": 2,
       "height": 0.2,
-      "inertia": 0.6733333333333332,
+      "restitution": 0,
+      "friction": 0,
+      "fixed": true,
       "support": {
         "kind": "fixed",
         "x": 2,
         "y": 0
-      }
+      },
+      "inertia": 0.6733333333333332,
+      "staticFriction": 0,
+      "kineticFriction": 0
     }
   ],
-  "springs": [],
   "bars": [],
   "forces": [
     {
@@ -84,6 +87,11 @@
       "bodyFrame": false
     }
   ],
+  "springs": [],
+  "monitor": "pinnedBeam",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
   "canvasMonitors": [
     {
       "id": "pinnedBeamReadoutangle",
@@ -152,10 +160,6 @@
       "caption": "Support Ry"
     }
   ],
-  "plots": [],
-  "monitor": "pinnedBeam",
-  "monitorType": "xy",
-  "plotX": "time",
   "view": {
     "x": 0,
     "y": 0,

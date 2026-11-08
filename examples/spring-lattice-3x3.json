@@ -21,7 +21,9 @@
       "fixed": false,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.03125
+      "inertia": 0.03125,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "circle2",
@@ -39,7 +41,9 @@
       "fixed": false,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.03125
+      "inertia": 0.03125,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "circle3",
@@ -57,7 +61,9 @@
       "fixed": false,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.03125
+      "inertia": 0.03125,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "circle4",
@@ -75,7 +81,9 @@
       "fixed": false,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.03125
+      "inertia": 0.03125,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "circle5",
@@ -93,7 +101,9 @@
       "fixed": false,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.03125
+      "inertia": 0.03125,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "circle6",
@@ -111,7 +121,9 @@
       "fixed": false,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.03125
+      "inertia": 0.03125,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "circle7",
@@ -129,7 +141,9 @@
       "fixed": false,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.03125
+      "inertia": 0.03125,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "circle8",
@@ -147,7 +161,9 @@
       "fixed": false,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.03125
+      "inertia": 0.03125,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "circle9",
@@ -165,7 +181,9 @@
       "fixed": false,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.03125
+      "inertia": 0.03125,
+      "staticFriction": 0,
+      "kineticFriction": 0
     }
   ],
   "bars": [],
@@ -179,7 +197,15 @@
       "b": "circle2",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring2",
@@ -189,7 +215,15 @@
       "b": "circle4",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring3",
@@ -199,7 +233,15 @@
       "b": "circle3",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring4",
@@ -209,7 +251,15 @@
       "b": "circle5",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring5",
@@ -219,7 +269,15 @@
       "b": "circle6",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring6",
@@ -229,7 +287,15 @@
       "b": "circle5",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring7",
@@ -239,7 +305,15 @@
       "b": "circle7",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring8",
@@ -249,7 +323,15 @@
       "b": "circle6",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring9",
@@ -259,7 +341,15 @@
       "b": "circle8",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring10",
@@ -269,7 +359,15 @@
       "b": "circle9",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring11",
@@ -279,7 +377,15 @@
       "b": "circle8",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "spring12",
@@ -289,7 +395,15 @@
       "b": "circle9",
       "k": 12,
       "rest": 1.5,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     }
   ],
   "monitor": "circle1",

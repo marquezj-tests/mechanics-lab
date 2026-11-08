@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "name": "Rigid bar pendulum",
+  "gravityOn": true,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "pivot",
+      "type": "anchor",
+      "name": "Pivot",
+      "x": 0,
+      "y": 1.5,
+      "support": {
+        "kind": "pinned",
+        "x": 0,
+        "y": 1.5
+      }
+    },
+    {
+      "id": "bob",
+      "type": "mass",
+      "name": "Bob",
+      "x": 1.2,
+      "y": -0.1,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0
+    }
+  ],
+  "bars": [
+    {
+      "id": "rod",
+      "type": "bar",
+      "name": "Pendulum bar",
+      "a": "pivot",
+      "b": "bob",
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "length": 2,
+      "collideConnected": false
+    }
+  ],
+  "forces": [],
+  "springs": [],
+  "monitor": "bob",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "bobSpeed",
+      "target": "bob",
+      "variable": "body:bob:speed",
+      "offset": {
+        "x": 35,
+        "y": 35
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "rodTension",
+      "target": "rod",
+      "variable": "bar:rod:tension",
+      "offset": {
+        "x": 35,
+        "y": -65
+      },
+      "precision": 3,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": 0,
+    "y": 0,
+    "scale": 85
+  }
+}

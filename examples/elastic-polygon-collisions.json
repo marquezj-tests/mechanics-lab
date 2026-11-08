@@ -1,0 +1,185 @@
+{
+  "version": 1,
+  "name": "Elastic polygon collisions",
+  "gravityOn": true,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "triangleBody",
+      "type": "mass",
+      "shape": "triangle",
+      "name": "Triangle",
+      "x": -2,
+      "y": 0.5,
+      "vertices": [
+        {
+          "x": -0.8,
+          "y": -0.5
+        },
+        {
+          "x": 0.8,
+          "y": -0.5
+        },
+        {
+          "x": 0,
+          "y": 1
+        }
+      ],
+      "mass": 1,
+      "vx": 0.6,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0.4,
+      "restitution": 1,
+      "friction": 0,
+      "inertia": 0.23166666666666666,
+      "staticFriction": 0,
+      "kineticFriction": 0
+    },
+    {
+      "id": "concaveBody",
+      "type": "mass",
+      "shape": "polygon",
+      "name": "Concave polygon",
+      "x": 2,
+      "y": 1,
+      "vertices": [
+        {
+          "x": -0.6076923076923078,
+          "y": -0.6076923076923078
+        },
+        {
+          "x": 0.9923076923076923,
+          "y": -0.6076923076923078
+        },
+        {
+          "x": 0.9923076923076923,
+          "y": -0.007692307692307693
+        },
+        {
+          "x": -0.007692307692307693,
+          "y": -0.007692307692307693
+        },
+        {
+          "x": -0.007692307692307693,
+          "y": 0.9923076923076923
+        },
+        {
+          "x": -0.6076923076923078,
+          "y": 0.9923076923076923
+        }
+      ],
+      "mass": 1,
+      "vx": -0.6,
+      "vy": 0,
+      "angle": 0,
+      "omega": -0.4,
+      "restitution": 1,
+      "friction": 0,
+      "inertia": 0.40398422090729785,
+      "staticFriction": 0,
+      "kineticFriction": 0
+    },
+    {
+      "id": "polygonFloor",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Floor",
+      "x": 0,
+      "y": -2,
+      "width": 12,
+      "height": 0.4,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "fixed": true,
+      "restitution": 1,
+      "friction": 0,
+      "inertia": 12.013333333333334,
+      "staticFriction": 0,
+      "kineticFriction": 0
+    },
+    {
+      "id": "leftWall",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Wall",
+      "x": -5.7,
+      "y": 0.2,
+      "width": 0.4,
+      "height": 4.4,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "fixed": true,
+      "restitution": 1,
+      "friction": 0,
+      "inertia": 1.626666666666667,
+      "staticFriction": 0,
+      "kineticFriction": 0
+    },
+    {
+      "id": "rightWall",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Wall",
+      "x": 5.7,
+      "y": 0.2,
+      "width": 0.4,
+      "height": 4.4,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "fixed": true,
+      "restitution": 1,
+      "friction": 0,
+      "inertia": 1.626666666666667,
+      "staticFriction": 0,
+      "kineticFriction": 0
+    }
+  ],
+  "bars": [],
+  "forces": [],
+  "springs": [],
+  "monitor": "triangleBody",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "triangleSpeed",
+      "target": "triangleBody",
+      "variable": "body:triangleBody:speed",
+      "offset": {
+        "x": -100,
+        "y": -105
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "concaveSpin",
+      "target": "concaveBody",
+      "variable": "body:concaveBody:omega",
+      "offset": {
+        "x": 30,
+        "y": -95
+      },
+      "precision": 3,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": 0,
+    "y": 0,
+    "scale": 50
+  },
+  "solverPrecision": "high"
+}

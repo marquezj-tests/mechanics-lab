@@ -12,14 +12,24 @@
       "radius": 0.5,
       "name": "Fixed pulley",
       "x": 0,
-      "y": 2
+      "y": 2,
+      "support": {
+        "kind": "pinned",
+        "x": 0,
+        "y": 2
+      }
     },
     {
       "id": "springAnchor",
       "type": "anchor",
       "name": "Spring support",
       "x": -0.5,
-      "y": -3
+      "y": -3,
+      "support": {
+        "kind": "pinned",
+        "x": -0.5,
+        "y": -3
+      }
     },
     {
       "id": "leftMass",
@@ -41,7 +51,9 @@
         "y": -1,
         "angle": 90
       },
-      "inertia": 0.0162
+      "inertia": 0.0162,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "rightMass",
@@ -63,7 +75,9 @@
         "y": -1,
         "angle": 90
       },
-      "inertia": 0.0162
+      "inertia": 0.0162,
+      "staticFriction": 0,
+      "kineticFriction": 0
     }
   ],
   "bars": [],
@@ -77,7 +91,15 @@
       "b": "leftMass",
       "k": 4,
       "rest": 2,
-      "damping": 0
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
     }
   ],
   "monitor": "rope",

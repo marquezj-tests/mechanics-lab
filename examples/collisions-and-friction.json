@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "name": "Collisions and friction",
+  "gravityOn": true,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "disk",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Disk",
+      "x": -2,
+      "y": 1.4,
+      "vx": 2.5,
+      "vy": 0,
+      "mass": 1,
+      "radius": 0.6,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 0.8,
+      "friction": 0.35,
+      "inertia": 0.18,
+      "staticFriction": 0.35,
+      "kineticFriction": 0.35
+    },
+    {
+      "id": "box",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Box",
+      "x": 1,
+      "y": 1.1,
+      "vx": -1,
+      "vy": 0,
+      "mass": 1.5,
+      "width": 1.2,
+      "height": 1.2,
+      "angle": 0.15,
+      "omega": 0,
+      "restitution": 0.8,
+      "friction": 0.35,
+      "inertia": 0.35999999999999993,
+      "staticFriction": 0.35,
+      "kineticFriction": 0.35
+    },
+    {
+      "id": "floor",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Floor",
+      "x": 0,
+      "y": -1.4,
+      "vx": 0,
+      "vy": 0,
+      "mass": 1,
+      "width": 12,
+      "height": 0.5,
+      "angle": 0,
+      "omega": 0,
+      "fixed": true,
+      "restitution": 0.6,
+      "friction": 0.5,
+      "inertia": 12.020833333333334,
+      "staticFriction": 0.5,
+      "kineticFriction": 0.5
+    }
+  ],
+  "bars": [],
+  "forces": [],
+  "springs": [],
+  "monitor": "disk",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "diskSpeed",
+      "target": "disk",
+      "variable": "body:disk:speed",
+      "offset": {
+        "x": -110,
+        "y": -95
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "boxSpin",
+      "target": "box",
+      "variable": "body:box:omega",
+      "offset": {
+        "x": 35,
+        "y": -85
+      },
+      "precision": 3,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": 0,
+    "y": 0,
+    "scale": 85
+  }
+}

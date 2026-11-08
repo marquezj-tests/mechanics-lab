@@ -10,7 +10,12 @@
       "type": "anchor",
       "name": "Pivot",
       "x": 0,
-      "y": 0
+      "y": 0,
+      "support": {
+        "kind": "pinned",
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "id": "upper",
@@ -28,7 +33,9 @@
       "omega": 0,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.21666666666666673
+      "inertia": 0.21666666666666673,
+      "staticFriction": 0,
+      "kineticFriction": 0
     },
     {
       "id": "lower",
@@ -46,7 +53,9 @@
       "omega": 0,
       "restitution": 1,
       "friction": 0,
-      "inertia": 0.21666666666666673
+      "inertia": 0.21666666666666673,
+      "staticFriction": 0,
+      "kineticFriction": 0
     }
   ],
   "bars": [
