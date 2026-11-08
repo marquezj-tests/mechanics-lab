@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "name": "Inverted double pendulum",
+  "gravityOn": true,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "anchor1",
+      "type": "anchor",
+      "name": "Pivot",
+      "x": 0,
+      "y": 0,
+      "support": {
+        "kind": "pinned",
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "mass1",
+      "type": "mass",
+      "name": "Mass 1",
+      "x": 0.13917310096006544,
+      "y": 0.9902680687415704,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0
+    },
+    {
+      "id": "mass2",
+      "type": "mass",
+      "name": "Mass 2",
+      "x": 0.03464463769241198,
+      "y": 1.9847899641098437,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0
+    }
+  ],
+  "bars": [
+    {
+      "id": "bar1",
+      "type": "bar",
+      "name": "Bar 1",
+      "a": "anchor1",
+      "b": "mass1",
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "length": 1,
+      "collideConnected": false
+    },
+    {
+      "id": "bar2",
+      "type": "bar",
+      "name": "Bar 2",
+      "a": "mass1",
+      "b": "mass2",
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "length": 1,
+      "collideConnected": false
+    }
+  ],
+  "forces": [],
+  "springs": [],
+  "monitor": "mass2",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [],
+  "view": {
+    "x": 0,
+    "y": 0,
+    "scale": 70
+  },
+  "solverPrecision": "high"
+}

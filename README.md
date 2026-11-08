@@ -12,6 +12,8 @@ Spanish (Argentina) is the default. Use **🇦🇷 Español / 🇬🇧 English**
 
 ## First experiment
 
+The startup scene is an **inverted double pendulum**: two 1 kg point masses on two massless 1 m bars, under gravity. The bars start 8° and −6° from the upward vertical, with zero initial velocity and High solver precision. This slight perturbation lets the unstable inverted system fall instead of remaining perfectly balanced. **Examples → Load inverted double pendulum** restores it; the spring–mass example remains in the menu. Its standalone file is `examples/inverted-double-pendulum.json`.
+
 1. Press **Run** to simulate the example. **Pause**, **Step**, and **Reset** control playback.
 2. Drag the timeline to inspect an earlier recorded state. **Replay** advances through the recording, then continues at its end. Recordings stop at 120 seconds.
 3. Choose a point mass or pinned support in the builder, then click the canvas to place it.

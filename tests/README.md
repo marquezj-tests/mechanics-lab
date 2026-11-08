@@ -10,6 +10,7 @@ No installation, browser, build step, or network access is required. The runner 
 
 | Area | Suites |
 |---|---|
+| Inverted double-pendulum startup, geometry, dynamics, energy, reset/replay and preset/file parity | default-pendulum |
 | Spanish/English UI, flag selector, preferences, custom text and recording preservation | languages |
 | Integration, damping, gravity, constraints | physics, energy |
 | Precision convergence, recording clock, reaction averaging, settings persistence | precision |
