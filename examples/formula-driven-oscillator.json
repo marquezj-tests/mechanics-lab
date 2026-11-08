@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "name": "Formula-driven oscillator",
+  "gravityOn": false,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "anchor1",
+      "type": "anchor",
+      "name": "Anchor 1",
+      "x": -2,
+      "y": 0
+    },
+    {
+      "id": "mass1",
+      "type": "mass",
+      "name": "Mass 1",
+      "x": 0,
+      "y": 0,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "constraint": {
+        "x": 0,
+        "y": 0,
+        "angle": 0
+      }
+    }
+  ],
+  "bars": [],
+  "forces": [
+    {
+      "id": "drive",
+      "type": "force",
+      "name": "Periodic drive",
+      "target": "mass1",
+      "local": {
+        "x": 0,
+        "y": 0
+      },
+      "fx": 0,
+      "fy": 0,
+      "bodyFrame": false,
+      "expressions": {
+        "fx": "A*cos(2*pi*f*t)"
+      },
+      "bindings": {}
+    }
+  ],
+  "springs": [
+    {
+      "id": "spring1",
+      "type": "spring",
+      "name": "Spring 1",
+      "a": "anchor1",
+      "b": "mass1",
+      "k": 4,
+      "rest": 2,
+      "damping": 0
+    }
+  ],
+  "monitor": "mass1",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "positionReadout",
+      "target": "mass1",
+      "variable": "body:mass1:x",
+      "offset": {
+        "x": 30,
+        "y": -145
+      },
+      "precision": 4,
+      "caption": ""
+    },
+    {
+      "id": "analyticReadout",
+      "target": "mass1",
+      "variable": "calculated:analytic",
+      "offset": {
+        "x": 30,
+        "y": -90
+      },
+      "precision": 4,
+      "caption": ""
+    },
+    {
+      "id": "errorReadout",
+      "target": "mass1",
+      "variable": "calculated:error",
+      "offset": {
+        "x": 30,
+        "y": -35
+      },
+      "precision": 6,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": -0.5,
+    "y": 0,
+    "scale": 90
+  },
+  "solverPrecision": "high",
+  "parameters": [
+    {
+      "name": "A",
+      "value": 1,
+      "unit": "N"
+    },
+    {
+      "name": "f",
+      "value": 0.25,
+      "unit": "Hz"
+    }
+  ],
+  "calculations": [
+    {
+      "id": "analytic",
+      "name": "Analytical displacement",
+      "expression": "A/(4-(2*pi*f)^2)*(cos(2*pi*f*t)-cos(2*t))",
+      "unit": "m",
+      "bindings": {},
+      "target": "mass1"
+    },
+    {
+      "id": "error",
+      "name": "Displacement error",
+      "expression": "u1-(A/(4-(2*pi*f)^2)*(cos(2*pi*f*t)-cos(2*t)))",
+      "unit": "m",
+      "bindings": {
+        "u1": "body:mass1:x"
+      },
+      "target": "mass1"
+    }
+  ]
+}
