@@ -2,7 +2,7 @@
 
 A self-contained, offline 2D mechanics laboratory for introductory college physics.
 
-[Open Mechanics Lab online](https://marquezj-tests.github.io/interactive-physics/). To work offline, download `index.html` and open it in your browser.
+[Open Mechanics Lab online](https://marquezj-tests.github.io/mechanics-lab/). To work offline, download `index.html` and open it in your browser.
 
 Open `index.html` directly in a modern browser. No installation, build step, server, or internet access is required. The same file adapts to laptop and mobile screens.
 
