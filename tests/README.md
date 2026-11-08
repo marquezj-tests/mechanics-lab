@@ -10,6 +10,7 @@ No installation, browser, build step, or network access is required. The runner 
 
 | Area | Suites |
 |---|---|
+| Spanish/English UI, flag selector, preferences, custom text and recording preservation | languages |
 | Integration, damping, gravity, constraints | physics, energy |
 | Precision convergence, recording clock, reaction averaging, settings persistence | precision |
 | Shapes, editing, selection, clipboard, undo, tools, replay | solids |

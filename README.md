@@ -6,6 +6,10 @@ A self-contained, offline 2D mechanics laboratory for introductory college physi
 
 Open `index.html` directly in a modern browser. No installation, build step, server, or internet access is required. The same file adapts to laptop and mobile screens.
 
+## Interface language
+
+Spanish (Argentina) is the default. Use **🇦🇷 Español / 🇬🇧 English** at the upper right to switch languages. The choice is remembered when browser local storage is available; blocked storage still allows switching for the current session. Both languages work offline in the same HTML file. Switching preserves the running experiment, recording, selection, plots and initial conditions. Custom object names and monitor captions remain as entered; new objects and example names use the language selected when they are created. Physics variable IDs, SI units, saved JSON and numeric CSV values remain unchanged. Plot CSV display headers use the selected language.
+
 ## First experiment
 
 1. Press **Run** to simulate the example. **Pause**, **Step**, and **Reset** control playback.
@@ -135,6 +139,8 @@ For this bridge the expected vertical reactions are 29.62 N at the left pin and 
 ## Verification
 
 Run **`node tests/run.cjs`** for the complete dependency-free suite. See [test coverage](tests/README.md) and the [manual browser qualification checklist](BROWSER_QA.md). Real-browser and device qualification is pending; Node workflow tests use DOM/canvas stubs.
+
+`tests/languages.cjs` checks Spanish defaults, both flag choices, remembered preferences and blocked-storage fallback, static labels/tooltips, plot and readout translation, user text preservation, errors, and unchanged running/recorded experiment state during switching.
 
 `tests/touch-selection.cjs` checks modifier-free group selection, touch taps/boxes, cancellation, group movement/copy/paste/undo, explicit panning and recording preservation. `tests/diagnostics.cjs` checks energy changes during replay, physical-loss/work explanations, link-length residuals and read-only rendering.
 

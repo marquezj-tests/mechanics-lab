@@ -20,7 +20,7 @@ const local=Geometry.local(b,Geometry.world(b,{x:.2,y:.3}));assert.ok(Math.abs(l
 const windowListeners={};
 const nodes=new Map(),context2d=new Proxy({}, {get:(o,k)=>k in o?o[k]:(()=>{}),set:(o,k,v)=>(o[k]=v,true)});
 function node(id){if(!nodes.has(id))nodes.set(id,{value:id==='speed'?'1':'',checked:false,style:{},dataset:{},innerHTML:'',textContent:'',listeners:{},classList:{add(){},remove(){},toggle(){},contains(){return false;}},addEventListener(type,fn){this.listeners[type]=fn;},getContext(){return context2d;},getBoundingClientRect(){return {width:1000,height:600,left:0,top:0};},setPointerCapture(){},setAttribute(name,value){this[name]=value;},querySelectorAll(){return [];},querySelector(){return null;}});return nodes.get(id);}
-const c=vm.createContext({console,document:{getElementById:node,querySelector:node,querySelectorAll:()=>[],addEventListener(){}},window:{devicePixelRatio:1,addEventListener(type,fn){windowListeners[type]=fn;}},ResizeObserver:class {observe(){}},requestAnimationFrame(){},setTimeout(){},clearTimeout(){}});
+const c=vm.createContext({console,localStorage:{getItem:()=>"en",setItem(){}},document:{getElementById:node,querySelector:node,querySelectorAll:()=>[],addEventListener(){}},window:{devicePixelRatio:1,addEventListener(type,fn){windowListeners[type]=fn;}},ResizeObserver:class {observe(){}},requestAnimationFrame(){},setTimeout(){},clearTimeout(){}});
 vm.runInContext(html.match(/<script>([\s\S]*)<\/script>/)[1],c);
 const run=code=>vm.runInContext(code,c);
 run("replaceExperiment({...example(),bodies:[],springs:[]});W=1000;H=600;createSolid('rectangle',{x:0,y:0});draw();");
