@@ -133,6 +133,20 @@ Choose **Examples → Load formula-driven oscillator** (**Ejemplos → Cargar os
 
 `node tests/formulas.cjs` checks mathematical precedence/functions, parser/resource bounds, code/property rejection, numerical domains, validation and dependency restrictions. `node tests/formula-physics.cjs` checks analytical driven-oscillator convergence, time-dependent forces/torques/motor targets, mechanical work, retry clock restoration and recorded input evaluation. `node tests/formulas-ui.cjs` covers atomic editing, calculated plots/readouts/CSV, clipboard renaming, deletion cleanup, runtime pause/replay and Spanish controls.
 
+## Frequency sweep through resonance
+
+Choose **Examples → Load resonance frequency sweep** (**Ejemplos → Cargar barrido de frecuencia y resonancia**) or open `examples/resonance-frequency-sweep.json`. This is a separate preset; the fixed-frequency oscillator and its analytical comparison remain available.
+
+The 1 kg mass, 4 N/m spring and horizontal guide start at rest at the spring's natural length. Light axial damping is 0.08 N·s/m (damping ratio 0.02). A 0.12 N sinusoidal force sweeps linearly from 0.15 Hz to 0.45 Hz over 60 s, then continues at 0.45 Hz. Parameters `A`, `fStart`, `rate` and `duration` control the force amplitude, starting frequency, frequency rate (0.005 Hz/s) and sweep duration. The phase integrates the frequency: during the ramp, `2*pi*(fStart*t + rate*t^2/2)`; after the ramp it continues continuously at the final frequency. Using `sin(2*pi*f(t)*t)` would give the wrong sweep rate.
+
+The undamped natural frequency is `sqrt(k/m)/(2*pi) ≈ 0.31831 Hz`; the excitation crosses it at **33.66 s**. Calculated readouts obtain actual mass and spring stiffness through variable references, so the natural frequency and crossing-time readout update if those properties are edited. Body mass and spring stiffness are now available as plot/formula variables. Keep a nonzero positive sweep rate and a frequency range containing the natural frequency when using the crossing-time calculation.
+
+Two plots open with the preset: displacement against time, and excitation/natural frequencies against time. Moving readouts show both frequencies, and the support readout gives the expected crossing time. Use 2× playback to reach resonance sooner, or rewind the recorded run to compare the frequency crossing with the response growth. On narrow screens the frequency plot initially collapses to preserve space; expand or move/collapse either plot as needed. They remain fixed screen windows, independent of gravity.
+
+This is a finite-rate transient sweep, not a steady-state frequency-response measurement: the largest displacement occurs after crossing the natural frequency because the response takes time to build. With the default settings, the response grows from less than 0.061 m in the first 15 s to about 0.335 m near 44.7 s, then decreases as the excitation moves farther above resonance. These values depend on sweep rate, damping and initial conditions. Reset reproduces the sweep, and saved files retain the formulas, references, monitors and plot lines.
+
+`node tests/frequency-sweep.cjs` verifies chirp phase/frequency continuity, physical natural-frequency references, crossing time, response growth/decay, default plots, recording/replay/reset/save, responsive placement and Spanish labels.
+
 ## Torque-limited speed motors
 
 Choose **Motor** and click a solid. Set **Target speed (rad/s)** and **Maximum torque (N·m)** in Properties, or uncheck **Motor enabled**. Positive speed is counterclockwise. A zero target brakes toward rest; zero maximum torque or disabling releases the shaft. The default target is 1 rad/s with a 1 N·m limit. Motors apply a pure torque about the center with no resultant force. They reference the ground; their housing receives the opposite torque. Add supports separately to position the axle. This is an ideal mechanical controller, with no electrical, thermal or efficiency model.

@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "name": "Resonance frequency sweep",
+  "gravityOn": false,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "anchor1",
+      "type": "anchor",
+      "name": "Anchor 1",
+      "x": -2,
+      "y": 0
+    },
+    {
+      "id": "mass1",
+      "type": "mass",
+      "name": "Mass 1",
+      "x": 0,
+      "y": 0,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "constraint": {
+        "x": 0,
+        "y": 0,
+        "angle": 0
+      }
+    }
+  ],
+  "bars": [],
+  "forces": [
+    {
+      "id": "drive",
+      "type": "force",
+      "name": "Swept-frequency excitation",
+      "target": "mass1",
+      "local": {
+        "x": 0,
+        "y": 0
+      },
+      "fx": 0,
+      "fy": 0,
+      "bodyFrame": false,
+      "expressions": {
+        "fx": "A*sin(2*pi*(fStart*min(t,duration)+0.5*rate*min(t,duration)^2+(fStart+rate*duration)*max(0,t-duration)))"
+      },
+      "bindings": {}
+    }
+  ],
+  "springs": [
+    {
+      "id": "spring1",
+      "type": "spring",
+      "name": "Spring 1",
+      "a": "anchor1",
+      "b": "mass1",
+      "k": 4,
+      "rest": 2,
+      "damping": 0.08
+    }
+  ],
+  "monitor": "mass1",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [
+    {
+      "id": "sweepResponse",
+      "name": "Displacement during the sweep",
+      "x": "time",
+      "y": "body:mass1:x",
+      "lines": [
+        {
+          "id": "response",
+          "y": "body:mass1:x",
+          "color": "#286cdb",
+          "visible": true
+        }
+      ],
+      "left": 8,
+      "top": 120,
+      "width": 330,
+      "height": 220,
+      "collapsed": false
+    },
+    {
+      "id": "sweepFrequencies",
+      "name": "Excitation and natural frequencies",
+      "x": "time",
+      "y": "calculated:excitationFrequency",
+      "lines": [
+        {
+          "id": "excitation",
+          "y": "calculated:excitationFrequency",
+          "color": "#d88424",
+          "visible": true
+        },
+        {
+          "id": "natural",
+          "y": "calculated:naturalFrequency",
+          "color": "#178879",
+          "visible": true
+        }
+      ],
+      "left": 350,
+      "top": 120,
+      "width": 330,
+      "height": 220,
+      "collapsed": false
+    }
+  ],
+  "canvasMonitors": [
+    {
+      "id": "resonanceTimeReadout",
+      "target": "anchor1",
+      "variable": "calculated:resonanceTime",
+      "offset": {
+        "x": -120,
+        "y": 55
+      },
+      "precision": 2,
+      "caption": ""
+    },
+    {
+      "id": "sweepFrequencyReadout",
+      "target": "mass1",
+      "variable": "calculated:excitationFrequency",
+      "offset": {
+        "x": 30,
+        "y": 45
+      },
+      "precision": 4,
+      "caption": ""
+    },
+    {
+      "id": "naturalFrequencyReadout",
+      "target": "mass1",
+      "variable": "calculated:naturalFrequency",
+      "offset": {
+        "x": 30,
+        "y": 100
+      },
+      "precision": 4,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": -0.5,
+    "y": 0,
+    "scale": 90
+  },
+  "solverPrecision": "high",
+  "parameters": [
+    {
+      "name": "A",
+      "value": 0.12,
+      "unit": "N"
+    },
+    {
+      "name": "fStart",
+      "value": 0.15,
+      "unit": "Hz"
+    },
+    {
+      "name": "rate",
+      "value": 0.005,
+      "unit": "Hz/s"
+    },
+    {
+      "name": "duration",
+      "value": 60,
+      "unit": "s"
+    }
+  ],
+  "calculations": [
+    {
+      "id": "excitationFrequency",
+      "name": "Excitation frequency",
+      "expression": "fStart+rate*min(t,duration)",
+      "unit": "Hz",
+      "bindings": {},
+      "target": "mass1"
+    },
+    {
+      "id": "naturalFrequency",
+      "name": "Natural frequency",
+      "expression": "sqrt(K/M)/(2*pi)",
+      "unit": "Hz",
+      "bindings": {
+        "K": "spring:spring1:stiffness",
+        "M": "body:mass1:mass"
+      },
+      "target": "mass1"
+    },
+    {
+      "id": "resonanceTime",
+      "name": "Natural-frequency crossing time",
+      "expression": "(sqrt(K/M)/(2*pi)-fStart)/rate",
+      "unit": "s",
+      "bindings": {
+        "K": "spring:spring1:stiffness",
+        "M": "body:mass1:mass"
+      },
+      "target": "anchor1"
+    }
+  ]
+}
