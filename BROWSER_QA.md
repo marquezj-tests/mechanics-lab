@@ -1,6 +1,8 @@
 # Offline browser qualification
 
-Automated Node regression tests do not establish browser compatibility. No real-browser/device results are recorded for this milestone yet.
+Automated Node regression tests do not establish browser compatibility. Full browser/device qualification remains pending.
+
+On 2026-11-08, a localization smoke check passed in the Codex in-app browser at a narrow viewport: the deployed site opened in Spanish, the upper-right selector displayed 🇦🇷 Español / 🇬🇧 English, and switching in both directions updated visible controls and tooltips. This does not qualify the remaining workflows or real mobile devices.
 
 | Target | Required check | Status |
 |---|---|---|
