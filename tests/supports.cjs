@@ -1,0 +1,10 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const html=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8');
+const {Physics,Geometry,Joints}=vm.runInNewContext(html.slice(html.indexOf('const Geometry ='),html.indexOf('const copy='))+';({Physics,Geometry,Joints})');
+const make=kind=>{const b={id:'b',type:'mass',name:'Body',mass:2,x:0,y:0,vx:0,vy:0,shape:'rectangle',width:2,height:1,angle:0,omega:0,support:{kind,x:0,y:0},fixed:kind==='fixed'};if(kind.startsWith('roller'))b.constraint={x:0,y:0,angle:kind==='rollerX'?0:90};b.inertia=Geometry.inertia(b);return b;};
+const model=b=>({bodies:[b],springs:[],bars:[],forces:[{id:'f',target:b.id,fx:4,fy:6,local:{x:1,y:0},bodyFrame:true}],gravityOn:false,gravity:9.81});
+const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-8,`${a} != ${b}`);
+for(const kind of ['pinned','fixed','rollerX','rollerY']){const b=make(kind),m=model(b);Physics.step(m);if(kind==='pinned'||kind==='fixed'){near(b.x,0);near(b.y,0);near(b.vx,0);near(b.vy,0);}if(kind==='fixed'){near(b.angle,0);near(b.omega,0);near(b.supportReaction.fx,-4);near(b.supportReaction.fy,-6);near(b.supportReaction.moment,-6);}else{near(b.omega,6/b.inertia*Physics.dt);near(b.supportReaction.moment,0);}if(kind==='rollerX'){near(b.y,0);near(b.vy,0);assert.ok(b.x>0);near(b.supportReaction.fx,0);}if(kind==='rollerY'){near(b.x,0);near(b.vx,0);assert.ok(b.y>0);near(b.supportReaction.fy,0);}}
+// Off-center bar loads must rotate a pinned solid without moving its center.
+const b=make('pinned'),m=model(b);m.forces=[];m.bodies.push({id:'a',type:'anchor',x:1,y:2});m.bars=[{id:'bar',a:'b',b:'a',localA:{x:1,y:0},localB:{x:0,y:0},length:2}];m.forces=[{target:'b',fx:0,fy:6,local:{x:1,y:0},bodyFrame:false}];for(let i=0;i<240;i++)Physics.step(m);near(b.x,0);near(b.y,0);near(Math.hypot(Joints.endpoint(b,{x:1,y:0}).x-1,Joints.endpoint(b,{x:1,y:0}).y-2),2);
+console.log('PASS: pinned/free rotation, fixed force and moment balance, X/Y roller motion and reactions, pinned off-center bar constraint');

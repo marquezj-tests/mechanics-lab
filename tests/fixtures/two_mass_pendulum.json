@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "snapGrid": true,
+  "name": "Spring–mass experiment",
+  "gravityOn": true,
+  "gravity": 9.81,
+  "bodies": [
+    {
+      "id": "anchor2",
+      "type": "anchor",
+      "name": "Anchor 2",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "mass3",
+      "type": "mass",
+      "name": "Mass 2",
+      "x": 2,
+      "y": 2,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0
+    },
+    {
+      "id": "mass5",
+      "type": "mass",
+      "name": "Mass 2",
+      "x": 2,
+      "y": 0,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0
+    }
+  ],
+  "springs": [],
+  "bars": [
+    {
+      "id": "bar4",
+      "type": "bar",
+      "name": "Bar 1",
+      "a": "anchor2",
+      "b": "mass3",
+      "length": 2.416609194718914,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "collideConnected": false
+    },
+    {
+      "id": "bar10",
+      "type": "bar",
+      "name": "Bar 2",
+      "a": "anchor2",
+      "b": "mass5",
+      "length": 2,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "collideConnected": false
+    },
+    {
+      "id": "bar15",
+      "type": "bar",
+      "name": "Bar 7",
+      "a": "mass3",
+      "b": "mass5",
+      "length": 2,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "collideConnected": false
+    }
+  ],
+  "monitor": "mass3",
+  "monitorType": "xy",
+  "view": {
+    "x": -1.7294117647058829,
+    "y": 1.188235294117647,
+    "scale": 85
+  }
+}

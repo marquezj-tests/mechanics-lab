@@ -1,0 +1,31 @@
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
+const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8'),code=html.slice(html.indexOf('const Geometry ='),html.indexOf('const copy=')),validation=html.slice(html.indexOf('function validate(raw)'),html.indexOf("\n$('file').onchange"));
+const {Cables,Physics,Joints,PlotAxes,AttachedMonitors,validate}=vm.runInNewContext(code+validation+';({Cables,Physics,Joints,PlotAxes,AttachedMonitors,validate})');
+const mass=(id,x,y,mass=1)=>({id,type:'mass',name:id,x,y,mass,vx:0,vy:0}),pulley=(id,x,y,radius=.5)=>({id,type:'anchor',name:id,x,y,pulley:true,radius});
+const model=bodies=>({version:1,name:'Strings',gravityOn:false,gravity:9.81,bodies,springs:[],bars:[],strings:[],forces:[],plots:[],canvasMonitors:[]});
+const rope=(m,a,b,via=[],length)=>{const c={id:'rope'+m.strings.length,type:'string',name:'String',a,b,localA:{x:0,y:0},localB:{x:0,y:0},via:via.map(id=>({id,side:1}))};c.length=length??Cables.geometry(m,c).length;m.strings.push(c);return c;};
+const near=(a,b,tol=1e-8)=>assert.ok(Math.abs(a-b)<tol,`${a} != ${b}`);
+// Finite-radius tangent strands and half-circumference give the correct Atwood geometry.
+let m=model([mass('a',-.5,0,1),mass('b',.5,0,2),pulley('p',0,2)]),c=rope(m,'a','b',['p']);m.gravityOn=true;near(c.length,4+Math.PI*.5);
+for(let i=0;i<120;i++)Physics.step(m);
+near(m.bodies[0].y,.5*3.27*.5**2);near(m.bodies[1].y,-.5*3.27*.5**2);near(m.bodies[0].vy,3.27*.5);near(m.bodies[1].vy,-3.27*.5);near(c.reaction.tension,13.08);near(c.reaction.fy,13.08);near(c.reaction.fyB,13.08);near(m.bodies[2].supportReaction.fy,26.16);near(m.bodies[2].supportReaction.moment,0);assert.ok(Joints.maxError(m)<1e-9);
+// Slack strings exert no compression; they release when the endpoints approach.
+m=model([{id:'a',type:'anchor',x:0,y:0},mass('b',1,0)]);c=rope(m,'a','b',[],2);m.bodies[1].vx=.5;for(let i=0;i<240;i++)Physics.step(m);near(m.bodies[1].x,1.5);near(c.reaction.tension,0);for(let i=0;i<360;i++)Physics.step(m);near(m.bodies[1].x,2);near(m.bodies[1].vx,0);assert.ok(c.reaction.tension>=0);
+m.bodies[1].vx=-1;Physics.step(m);assert.ok(m.bodies[1].x<2);near(m.bodies[1].vx,-1);near(c.reaction.tension,0);
+// A taut string pendulum should retain its length and conservative motion.
+m=model([{id:'a',type:'anchor',x:0,y:0},mass('b',1.2,-1.6)]);c=rope(m,'a','b');m.gravityOn=true;const e0=Physics.energy(m);let peak=0;for(let i=0;i<2400;i++){Physics.step(m);peak=Math.max(peak,Math.abs(Physics.energy(m)-e0));assert.ok(Joints.maxError(m)<1e-8);assert.ok(c.reaction.tension>=0);}assert.ok(peak<1e-4,`string pendulum energy error ${peak}`);
+// Off-center attachments generate torque, and multiple guides have the right length derivatives.
+m=model([mass('a',-2,-2),mass('b',3,-1),pulley('p',-1,1,.4),pulley('q',2,1,.6)]);c=rope(m,'a','b',['p','q']);const g=Cables.geometry(m,c),h=1e-6;for(const [i,gradient]of [[0,g.ga],[1,g.gb]])for(const axis of ['x','y']){m.bodies[i][axis]+=h;const plus=Cables.geometry(m,c).length;m.bodies[i][axis]-=2*h;const minus=Cables.geometry(m,c).length;m.bodies[i][axis]+=h;near((plus-minus)/(2*h),gradient[axis],1e-7);}
+for(const axis of ['x','y'])near(-g.ga[axis]-g.gb[axis]+g.guides.reduce((s,p)=>s+p[axis],0),0);
+// The oscillator exercises persistent tension with both gravity and a spring.
+m=validate(JSON.parse(fs.readFileSync(path.join(__dirname,'../examples/pulley-oscillator.json'),'utf8')));const initialEnergy=Physics.energy(m),left=m.bodies.find(b=>b.id==='leftMass'),right=m.bodies.find(b=>b.id==='rightMass');let oscillatorPeak=0;for(let i=0;i<4800;i++){Physics.step(m);near(left.y+right.y,-2);near(left.vy+right.vy,0);oscillatorPeak=Math.max(oscillatorPeak,Math.abs(Physics.energy(m)-initialEnergy));assert.ok(m.strings[0].reaction.tension>9);}assert.ok(oscillatorPeak<1e-5);
+near(left.y+1,(.5/Math.sqrt(2))*Math.sin(Math.sqrt(2)*20),1e-5);
+const frame={t:20,energy:Physics.energy(m),states:m.bodies,reactions:m.strings.map(c=>({id:c.id,...c.reaction})),supports:m.bodies.filter(b=>b.supportReaction).map(b=>({id:b.id,...b.supportReaction}))};for(const mon of m.canvasMonitors)assert.ok(Number.isFinite(AttachedMonitors.display(m,frame,mon).value));near(PlotAxes.value(m,frame,'string:rope:slack'),0);assert.ok(PlotAxes.value(m,frame,'string:rope:tension')>9);assert.ok(PlotAxes.value(m,frame,'string:rope:fyB')>9);validate(JSON.parse(JSON.stringify(m)));
+// Import rejects malformed routes and missing guides, and old files remain supported.
+for(const mutate of [m=>m.bodies.find(b=>b.pulley).radius=0,m=>m.strings[0].via[0].id='missing',m=>m.strings[0].via[0].side=0,m=>m.strings[0].length=-1,m=>m.strings[0].localA.x=Infinity]){const bad=JSON.parse(fs.readFileSync(path.join(__dirname,'../examples/pulley-oscillator.json'),'utf8'));mutate(bad);assert.throws(()=>validate(bad));}
+console.log('PASS: finite-radius Atwood acceleration/tension/axle reaction, slack/capture/release, string pendulum energy, multi-pulley gradients, oscillator energy, monitors, save/load and validation');
+// Coupled taut ropes and bars share one constraint solve.
+for(const second of ['string','bar']){m=model([{id:'a',type:'anchor',x:0,y:0},mass('b',1,0),mass('c',2,0)]);c=rope(m,'a','b');if(second==='string')rope(m,'b','c');else m.bars.push({id:'bar',type:'bar',a:'b',b:'c',localA:{x:0,y:0},localB:{x:0,y:0},length:1});m.forces=[{id:'f',target:'c',fx:4,fy:0,local:{x:0,y:0}}];for(let i=0;i<120;i++)Physics.step(m);near(m.bodies[1].x,1);near(m.bodies[2].x,2);near(c.reaction.tension,4);near(m.bodies[0].supportReaction.fx,-4);}
+// The rope pulls at the chosen local point and supplies the expected torque.
+m=model([{id:'solid',type:'mass',shape:'rectangle',name:'Solid',mass:1,width:2,height:.5,inertia:2.125/6,x:0,y:0,angle:0,omega:0,vx:0,vy:0,support:{kind:'pinned',x:0,y:0}},{id:'a',type:'anchor',x:1,y:2}]);c=rope(m,'solid','a');c.localA={x:1,y:0};c.length=2;m.forces=[{id:'f',target:'solid',fx:0,fy:-2,local:{x:1,y:0}}];for(let i=0;i<120;i++)Physics.step(m);near(m.bodies[0].angle,0);near(c.reaction.tension,2);near(c.reaction.momentA,2);
+console.log('PASS: coupled strings/bar constraints, support forces and off-center string torque');

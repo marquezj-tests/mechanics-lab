@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "name": "Atwood machine · fixed pulley",
+  "gravityOn": true,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "lightMass",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Light mass · 1 kg",
+      "x": -0.6,
+      "y": 0,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "radius": 0.2,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 0,
+      "friction": 0,
+      "constraint": {
+        "x": -0.6,
+        "y": 0,
+        "angle": 90
+      },
+      "inertia": 0.020000000000000004
+    },
+    {
+      "id": "heavyMass",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Heavy mass · 2 kg",
+      "x": 0.6,
+      "y": 0,
+      "mass": 2,
+      "vx": 0,
+      "vy": 0,
+      "radius": 0.2,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 0,
+      "friction": 0,
+      "constraint": {
+        "x": 0.6,
+        "y": 0,
+        "angle": 90
+      },
+      "inertia": 0.04000000000000001
+    },
+    {
+      "id": "fixedWheel",
+      "type": "anchor",
+      "pulley": true,
+      "name": "Fixed pulley",
+      "radius": 0.6,
+      "x": 0,
+      "y": 3
+    },
+    {
+      "id": "travelStop",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Travel stop",
+      "x": -0.6,
+      "y": 2.3,
+      "width": 0.65,
+      "height": 0.15,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "fixed": true,
+      "restitution": 0,
+      "friction": 0,
+      "inertia": 0.037083333333333336
+    }
+  ],
+  "bars": [],
+  "forces": [],
+  "springs": [],
+  "monitor": "atwoodString",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "firstAcceleration",
+      "target": "lightMass",
+      "variable": "body:lightMass:ay",
+      "offset": {
+        "x": -180,
+        "y": 55
+      },
+      "precision": 3,
+      "caption": "ay"
+    },
+    {
+      "id": "secondAcceleration",
+      "target": "heavyMass",
+      "variable": "body:heavyMass:ay",
+      "offset": {
+        "x": 35,
+        "y": 55
+      },
+      "precision": 3,
+      "caption": "ay"
+    },
+    {
+      "id": "atwoodTension",
+      "target": "atwoodString",
+      "variable": "string:atwoodString:tension",
+      "offset": {
+        "x": -185,
+        "y": -25
+      },
+      "precision": 3,
+      "caption": "Tension"
+    },
+    {
+      "id": "atwoodAxleLoad",
+      "target": "fixedWheel",
+      "variable": "support:fixedWheel:fy",
+      "offset": {
+        "x": 45,
+        "y": -45
+      },
+      "precision": 3,
+      "caption": "Axle Ry"
+    }
+  ],
+  "view": {
+    "x": 0,
+    "y": 0.5,
+    "scale": 65
+  },
+  "strings": [
+    {
+      "id": "atwoodString",
+      "type": "string",
+      "name": "Atwood string",
+      "a": "lightMass",
+      "b": "heavyMass",
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "via": [
+        {
+          "id": "fixedWheel",
+          "side": 1
+        }
+      ],
+      "length": 7.884955592153876
+    }
+  ]
+}

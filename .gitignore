@@ -1,0 +1,10 @@
+# Local assistant/runtime directories; not part of the simulator.
+.agents/
+.aws/
+.codex/
+
+# Local credentials and operating-system metadata.
+.env
+.env.*
+!.env.example
+.DS_Store

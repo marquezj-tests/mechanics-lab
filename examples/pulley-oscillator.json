@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "name": "Ideal pulley and spring oscillator",
+  "gravityOn": true,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "wheel",
+      "type": "anchor",
+      "pulley": true,
+      "radius": 0.5,
+      "name": "Fixed pulley",
+      "x": 0,
+      "y": 2
+    },
+    {
+      "id": "springAnchor",
+      "type": "anchor",
+      "name": "Spring support",
+      "x": -0.5,
+      "y": -3
+    },
+    {
+      "id": "leftMass",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Left mass · 1 kg",
+      "x": -0.5,
+      "y": -1,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0.5,
+      "radius": 0.18,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "constraint": {
+        "x": -0.5,
+        "y": -1,
+        "angle": 90
+      },
+      "inertia": 0.0162
+    },
+    {
+      "id": "rightMass",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Right mass · 1 kg",
+      "x": 0.5,
+      "y": -1,
+      "mass": 1,
+      "vx": 0,
+      "vy": -0.5,
+      "radius": 0.18,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "constraint": {
+        "x": 0.5,
+        "y": -1,
+        "angle": 90
+      },
+      "inertia": 0.0162
+    }
+  ],
+  "bars": [],
+  "forces": [],
+  "springs": [
+    {
+      "id": "returnSpring",
+      "type": "spring",
+      "name": "Restoring spring",
+      "a": "springAnchor",
+      "b": "leftMass",
+      "k": 4,
+      "rest": 2,
+      "damping": 0
+    }
+  ],
+  "monitor": "rope",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "ropeTension",
+      "target": "rope",
+      "variable": "string:rope:tension",
+      "offset": {
+        "x": -175,
+        "y": -25
+      },
+      "precision": 3,
+      "caption": "Tension"
+    },
+    {
+      "id": "axleLoad",
+      "target": "wheel",
+      "variable": "support:wheel:fy",
+      "offset": {
+        "x": 45,
+        "y": -30
+      },
+      "precision": 3,
+      "caption": "Axle Ry"
+    },
+    {
+      "id": "leftVelocity",
+      "target": "leftMass",
+      "variable": "body:leftMass:vy",
+      "offset": {
+        "x": -170,
+        "y": 45
+      },
+      "precision": 3,
+      "caption": "vy"
+    },
+    {
+      "id": "rightVelocity",
+      "target": "rightMass",
+      "variable": "body:rightMass:vy",
+      "offset": {
+        "x": 35,
+        "y": 45
+      },
+      "precision": 3,
+      "caption": "vy"
+    }
+  ],
+  "view": {
+    "x": 0,
+    "y": -0.5,
+    "scale": 65
+  },
+  "strings": [
+    {
+      "id": "rope",
+      "type": "string",
+      "name": "Pulley string",
+      "a": "leftMass",
+      "b": "rightMass",
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "via": [
+        {
+          "id": "wheel",
+          "side": 1
+        }
+      ],
+      "length": 7.570796326794897
+    }
+  ]
+}
