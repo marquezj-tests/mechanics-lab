@@ -75,7 +75,7 @@ Select a spring or bar on the canvas to show reaction readouts in Properties, or
 Measurement conventions:
 
 - **Force on A** uses world components; endpoint B receives the opposite force. Signed axial force is positive in tension and negative in compression.
-- **Moment A / B** means the torque exerted by that link force about each attached body’s center of mass. Ideal freely rotating pins transmit no independent bending couple. Center-attached springs therefore have zero endpoint moments.
+- **Moment A / B** means the total torque exerted by the link about each attached body’s center of mass, including any reaction couple. Ideal freely rotating pins transmit no independent bending couple. Center-attached springs therefore have zero endpoint moments.
 - **Bar reaction force** is calculated from the bar solver’s accumulated impulses divided by the physics step duration. It includes dynamic and collision transients. Impulses and angular impulses are measured over the last base physics step (normally 1/240 s), rather than cumulatively or over the 1/60 s recording interval. At time zero no dynamic bar reaction has been measured yet.
 - **Spring force** includes Hooke’s-law force and axial damping. Its displayed impulse is an instantaneous-force estimate multiplied by the base physics step duration.
 - **Link momentum is zero:** springs and bars are ideal massless links. Their impulses describe transferred momentum, not stored momentum. Body linear momentum and angular momentum about the center of mass are available in readouts, plot axis choices, and body CSV exports.
@@ -135,7 +135,7 @@ Only the edited mechanism is assembled; unrelated unfinished connections remain 
 
 `tests/joint-editing.cjs` verifies constraints after each intermediate pointer event, hinge rotation and resizing, bar/string limits, unequal-mass pointer tracking, roller guides, blocked mechanisms, inspector edits, disconnected mechanisms, support relocation, velocity preservation, undo/redo and the next simulation step.
 
-The next joint feature is welded joints. Pure applied torques and separate static/kinetic friction remain in this stage of the roadmap, followed by gears/motors, safe formulas, visual programming and the remaining browser/device qualification.
+Hinges, moving-body sliders and welded joints are implemented. Pure applied torques and separate static/kinetic friction remain in this stage of the roadmap, followed by gears/motors, safe formulas, visual programming and the remaining browser/device qualification.
 
 ## Sliders on moving bodies
 
@@ -148,6 +148,20 @@ The slider carries transverse force and reaction couples, with zero force along 
 Choose **Examples → Load moving-guide slider** (**Ejemplos → Cargar corredera con guía móvil**) or open `examples/moving-guide-slider.json`. A uniform 2 kg guide, 4 m long, rotates about its pinned center. A 1 kg solid carriage starts 1 m along its axis at 0.35 rad, with 0.5 m/s initial sliding velocity. A 6 N/m undamped spring of natural length 1 m connects the guide center to the carriage. Gravity makes the guide rotate while the carriage slides. Both bodies keep their relative angle. High precision is selected; attached readouts show sliding position and joint reaction magnitude. The displayed rail does not impose end stops at the guide’s physical ends.
 
 Sliders save in the existing version 1 `bars` collection as `joint: "slider"`, `length: 0`, a local `axisAngle` in radians, and a `referenceAngle` for relative rotation. Copy/paste, resizing, monitors, CSV, replay, reset, deletion and undo preserve them. Bars, hinges and sliders share the 400-link limit. `tests/sliders.cjs` verifies analytical incline acceleration and reactions, reaction couples, the rotating-axis Jacobian, energy and momentum, elastic impacts, point carriages and validation. `tests/sliders-ui.cjs` covers builder ordering, geometry/axis fields, joint-preserving editing, picking, clipboard/persistence, playback and both languages.
+
+## Welded joints
+
+Choose **Welded joint** (**Unión soldada**) and click an attachment point on each of two solids. Click a shared corner/edge twice to connect overlapping attachment points. A weld makes the points coincide and holds the solids’ initial relative angle. Their masses, inertias and shapes remain separate, but the connected assembly moves as a rigid unit. Use a fixed solid to weld to the ground. Point masses and support markers have no orientation and cannot be welded; apply a support to a solid instead.
+
+A square marker with an X identifies the weld and stays selectable over the bodies. Properties expose both local attachments and **Relative angle (°)**. Joint-parameter edits assemble on Run or Step; dragging, rotating, resizing and numerical body-geometry edits keep the assembly connected immediately. Impossible moves stop at the last feasible pose. Assembly may change incompatible initial positions/velocities, so use coincident pins and consistent rigid-body velocities for quantitative initial conditions. Welds are ideal, massless and infinitely rigid; they do not bend elastically or break.
+
+**Joint couple on A (N·m)** measures the pure torque transmitted at the joint, positive counterclockwise on body A. The couple on B is its opposite. It is separate from **Moment A/B about COM**, which also includes each attachment force’s lever arm. Hinges report zero joint couple; welds and solid-carriage sliders can transmit one. Couples are recorded for replay, selectable in moving readouts and plots, and included in joint CSV exports alongside the existing forces, moments and angular impulses. Support reactions include the transmitted couple. Welding to a fixed solid can therefore carry a cantilever load.
+
+Welded clusters ignore internal collisions by default, including overlapping pieces connected through intermediate welded bodies. Other solids still collide with the assembly. The existing **Collide connected solids** setting can explicitly enable collision for a connected pair, which may conflict with the weld geometry. Copy/paste, Save As/Open, resize, delete/undo, replay and reset retain the joint and its measurements. Welds use the version 1 `bars` collection with `joint: "weld"`, `length: 0` and `referenceAngle` in radians. All bilateral bars/joints share the 400-link limit.
+
+Choose **Examples → Load hinge vs weld** (**Ejemplos → Cargar articulación vs soldadura**) or open `examples/hinge-vs-weld.json`. Each experiment has two uniform 1 kg beams, each 2 m × 0.2 m, with A pinned at its center and B attached to its right end. Gravity is off, both pairs start at rest, and a constant 2 N downward force acts at B’s outer end. Only the connecting joint differs. The hinged pair changes relative angle and transmits no joint couple. The welded pair keeps zero relative angle and transmits a couple; its initial angular acceleration is **−6 / (4 + 2 × 0.3366667) ≈ −1.28388 rad/s²**. Moving readouts compare relative angle and joint couple. Reset repeats the comparison.
+
+`tests/welds.cjs` checks force/couple equilibrium, analytical rigid-assembly acceleration, unequal-mass off-center momentum/angular momentum/energy, elastic contact/support impulses, welded-cluster collision exclusion, conflicting constraints, comparison measurements and schema validation. `tests/welds-ui.cjs` covers shared-point creation, solid-only attachments, angle/geometry edits, clipboard/persistence/undo, rendering/picking, replay, CSV and both languages.
 
 ## Solver precision
 

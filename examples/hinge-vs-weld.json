@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "name": "Hinge versus weld",
+  "gravityOn": false,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "hingedA",
+      "type": "mass",
+      "name": "Hinged beam A",
+      "shape": "rectangle",
+      "x": -4,
+      "y": 0,
+      "width": 2,
+      "height": 0.2,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "support": {
+        "kind": "pinned",
+        "x": -4,
+        "y": 0
+      },
+      "inertia": 0.3366666666666666
+    },
+    {
+      "id": "hingedB",
+      "type": "mass",
+      "name": "Hinged beam B",
+      "shape": "rectangle",
+      "x": -2,
+      "y": 0,
+      "width": 2,
+      "height": 0.2,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "inertia": 0.3366666666666666
+    },
+    {
+      "id": "weldedA",
+      "type": "mass",
+      "name": "Welded beam A",
+      "shape": "rectangle",
+      "x": 4,
+      "y": 0,
+      "width": 2,
+      "height": 0.2,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "support": {
+        "kind": "pinned",
+        "x": 4,
+        "y": 0
+      },
+      "inertia": 0.3366666666666666
+    },
+    {
+      "id": "weldedB",
+      "type": "mass",
+      "name": "Welded beam B",
+      "shape": "rectangle",
+      "x": 6,
+      "y": 0,
+      "width": 2,
+      "height": 0.2,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "inertia": 0.3366666666666666
+    }
+  ],
+  "bars": [
+    {
+      "id": "hingedJoint",
+      "type": "bar",
+      "joint": "hinge",
+      "name": "Hinge 1",
+      "a": "hingedA",
+      "b": "hingedB",
+      "localA": {
+        "x": 1,
+        "y": 0
+      },
+      "localB": {
+        "x": -1,
+        "y": 0
+      },
+      "length": 0,
+      "collideConnected": false
+    },
+    {
+      "id": "weldedJoint",
+      "type": "bar",
+      "joint": "weld",
+      "name": "Weld 1",
+      "a": "weldedA",
+      "b": "weldedB",
+      "localA": {
+        "x": 1,
+        "y": 0
+      },
+      "localB": {
+        "x": -1,
+        "y": 0
+      },
+      "length": 0,
+      "collideConnected": false,
+      "referenceAngle": 0
+    }
+  ],
+  "forces": [
+    {
+      "id": "hingedForce",
+      "type": "force",
+      "name": "Force 1",
+      "target": "hingedB",
+      "local": {
+        "x": 1,
+        "y": 0
+      },
+      "fx": 0,
+      "fy": -2,
+      "bodyFrame": false
+    },
+    {
+      "id": "weldedForce",
+      "type": "force",
+      "name": "Force 2",
+      "target": "weldedB",
+      "local": {
+        "x": 1,
+        "y": 0
+      },
+      "fx": 0,
+      "fy": -2,
+      "bodyFrame": false
+    }
+  ],
+  "springs": [],
+  "monitor": "weldedJoint",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "hingedrelativeAngle",
+      "target": "hingedJoint",
+      "variable": "bar:hingedJoint:relativeAngle",
+      "offset": {
+        "x": -80,
+        "y": -120
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "hingedcouple",
+      "target": "hingedJoint",
+      "variable": "bar:hingedJoint:couple",
+      "offset": {
+        "x": -80,
+        "y": 45
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "weldedrelativeAngle",
+      "target": "weldedJoint",
+      "variable": "bar:weldedJoint:relativeAngle",
+      "offset": {
+        "x": -80,
+        "y": -120
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "weldedcouple",
+      "target": "weldedJoint",
+      "variable": "bar:weldedJoint:couple",
+      "offset": {
+        "x": -80,
+        "y": 45
+      },
+      "precision": 3,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": 1,
+    "y": 0,
+    "scale": 50
+  },
+  "solverPrecision": "high"
+}

@@ -22,6 +22,7 @@ No installation, browser, build step, or network access is required. The runner 
 | Spring attachment editing, rendering/picking, persistence, resizing and bilingual example | spring-attachments-ui |
 | Live geometry editing with joint/bar/string constraints, supports, blocked edits and pointer tracking | joint-editing |
 | Moving-body sliders: inclined motion, rotating-axis gradients, reactions, conservation, contacts, editing, persistence and bilingual UI | sliders, sliders-ui |
+| Welds: equilibrium/couples, rigid motion, conservation, contact/support impulses, clusters, editing/persistence and bilingual comparison | welds, welds-ui |
 | General hinges: analytical motion, reactions, conservation, editing, persistence and bilingual example | hinges, hinges-ui |
 | Bars, supports, reaction forces and torque | bars, supports, forces, bridge, bridge-preset, bridge-fixed, support-example |
 | Strings, finite-radius routing, fixed and moving pulleys | strings, movable-pulleys |
