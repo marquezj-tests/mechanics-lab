@@ -20,7 +20,7 @@ console.log('PASS: pendulum period/length, free connected masses, momentum, chai
 const chain=[anchor('pivot',0,0)],links=[];
 for(let i=1;i<=10;i++){const body={...mass('solid'+i,i*.25,-i*.3),mass:i===10?1000:1,shape:'rectangle',width:.5,height:.2,angle:i,omega:i*.5};body.inertia=Geometry.inertia(body);const previous=chain[chain.length-1];chain.push(body);const link=bar(previous.id,body.id,1,{id:'joint'+i,localA:previous.shape?{x:.2,y:0}:{x:0,y:0},localB:{x:-.2,y:0}}),a=Joints.endpoint(previous,link.localA),b=Joints.endpoint(body,link.localB);link.length=Math.hypot(a.x-b.x,a.y-b.y);links.push(link);}
 m=model(chain,links,true);let peakError=0;for(let i=0;i<360;i++){Physics.step(m);peakError=Math.max(peakError,error(m));}assert.ok(peakError<1e-6,`coupled bars stretched by ${peakError} m`);
-const immovable=model([anchor('a',0,0),anchor('b',2,0)],[bar('a','b',1)]);assert.throws(()=>Physics.step(immovable),/bar constraints cannot be satisfied/,'incompatible constraints must pause, not silently stretch');
+const immovable=model([anchor('a',0,0),anchor('b',2,0)],[bar('a','b',1)]);assert.throws(()=>Physics.step(immovable),/link constraints cannot be satisfied/,'incompatible constraints must pause, not silently stretch');
 console.log('PASS: every-step length accuracy for coupled off-center rigid bodies with 1000:1 mass ratio; incompatible constraints rejected. Peak error:',peakError,'m');
 // User fixture: Bar 1's target is 2.4166 m but starts 2.8284 m long.
 const fixture=()=>JSON.parse(fs.readFileSync(require('node:path').join(__dirname,'fixtures/two_mass_pendulum.json'),'utf8'));
