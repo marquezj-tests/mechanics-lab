@@ -86,8 +86,8 @@
       "target": "mass2",
       "variable": "body:mass2:speed",
       "offset": {
-        "x": 35,
-        "y": 35
+        "x": 40,
+        "y": -85
       },
       "precision": 3,
       "caption": ""
@@ -97,8 +97,8 @@
       "target": "bar1",
       "variable": "bar:bar1:tension",
       "offset": {
-        "x": 35,
-        "y": -65
+        "x": -190,
+        "y": 45
       },
       "precision": 3,
       "caption": ""
