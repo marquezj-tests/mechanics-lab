@@ -1,0 +1,31 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');const{app}=require('./helpers/app.cjs');const{run}=app();
+const{Geometry,Joints,Physics,PlotAxes,AttachedMonitors,validate}=run('({Geometry,Joints,Physics,PlotAxes,AttachedMonitors,validate})');
+const near=(a,b,tol=1e-8)=>assert.ok(Math.abs(a-b)<tol,`${a} != ${b}`),clone=x=>JSON.parse(JSON.stringify(x));
+function body(id,x=0,y=0,angle=0){const b={id,type:'mass',name:id,shape:'rectangle',width:2,height:.2,mass:2,x,y,angle,vx:0,vy:0,omega:0,restitution:1,friction:0};b.inertia=Geometry.inertia(b);return b;}
+const joint=(a,b,extra={})=>({id:'slider',type:'bar',joint:'slider',name:'Slider',a,b,localA:{x:0,y:0},localB:{x:0,y:0},axisAngle:0,referenceAngle:0,length:0,collideConnected:false,...extra});
+const scene=(bodies,slider)=>({version:1,name:'Slider test',bodies,bars:[slider],springs:[],forces:[],gravityOn:true,gravity:9.81,solverPrecision:'high',plots:[],canvasMonitors:[],view:{x:0,y:0,scale:80}});
+// Fixed frictionless incline: a=-g sin(theta), N=mg cos(theta).
+const theta=.4,u={x:Math.cos(theta),y:Math.sin(theta)},n={x:-u.y,y:u.x};let a=body('a',0,0,theta),b=body('b',u.x,u.y,theta);a.fixed=true;b.mass=1;b.inertia=Geometry.inertia(b);let m=scene([a,b],joint('a','b'));
+for(let i=0;i<240;i++)Physics.step(m);const s=1-.5*9.81*Math.sin(theta);near(b.x,s*u.x);near(b.y,s*u.y);near(b.vx,-9.81*Math.sin(theta)*u.x);near(b.angle,theta);near(b.omega,0);near(Joints.maxError(m),0);const r=m.bars[0].reaction;near(r.fx,9.81*Math.cos(theta)*u.y);near(r.fy,-9.81*Math.cos(theta)*u.x);near(r.momentB,0);near(a.supportReaction.moment,-r.momentA);near(r.fx*u.x+r.fy*u.y,0);
+near(Joints.sliderGeometry(m.bars[0],a,b).rate,-9.81*Math.sin(theta));
+// A force applied off-center is balanced by the slider's orientation couple.
+a=body('a');a.fixed=true;b=body('b',1,0);m=scene([a,b],joint('a','b'));m.gravityOn=false;m.forces=[{id:'force',type:'force',target:'b',local:{x:1,y:0},fx:0,fy:10,bodyFrame:false}];Physics.step(m);near(b.omega,0);near(m.bars[0].reaction.momentB,-10);near(m.bars[0].reaction.momentA,20);near(a.supportReaction.moment,-20);
+// Elastic normal impact on a slider transfers its blocked impulse to the guide.
+a=body('a',0,-1);a.fixed=true;b={id:'b',type:'mass',name:'b',shape:'circle',radius:.2,mass:1,x:0,y:0,angle:0,omega:0,vx:0,vy:0,restitution:1,friction:0,inertia:.02};const ball={...b,id:'ball',name:'Ball',y:1,vy:-1};m=scene([a,b,ball],joint('a','b',{localA:{x:0,y:1}}));m.gravityOn=false;for(let i=0;i<240;i++)Physics.step(m);near(Physics.energy(m),.5,1e-8);assert.ok(ball.vy>.99);near(b.y,0);near(Joints.maxError(m),0);
+// Check the rotating-guide Jacobian against finite differences at off-center pins.
+a=body('a',-.2,.3,.7);b=body('b',1.5,.4,.2);m=scene([a,b],joint('a','b',{axisAngle:.3,referenceAngle:-.5,localA:{x:.4,y:.2},localB:{x:-.3,y:.1}}));const row=Joints.reference(m).rows[0];
+for(let i=0;i<6;i++){const obj=i<3?a:b,key=['x','y','angle'][i%3],original=obj[key],eps=1e-6;obj[key]=original+eps;const plus=Joints.sliderGeometry(m.bars[0],a,b).error;obj[key]=original-eps;const minus=Joints.sliderGeometry(m.bars[0],a,b).error;obj[key]=original;near((plus-minus)/(2*eps),row.gradient[i]/row.scale,1e-8);}
+// Free guide/carriage: internal reactions conserve both momenta and energy.
+a=body('a',0,0,.3);b=body('b',1.2*Math.cos(.3),1.2*Math.sin(.3),.5);a.width=3;a.inertia=Geometry.inertia(a);b.width=.5;b.inertia=Geometry.inertia(b);a.vx=.2;a.vy=-.1;a.omega=.6;b.vx=.7;b.vy=.3;b.omega=.6;m=scene([a,b],joint('a','b',{referenceAngle:.2}));m.gravityOn=false;Physics.prepare(m);
+const momentum=m=>m.bodies.reduce((v,b)=>({x:v.x+b.mass*b.vx,y:v.y+b.mass*b.vy,L:v.L+b.mass*(b.x*b.vy-b.y*b.vx)+b.inertia*b.omega}),{x:0,y:0,L:0}),p0=momentum(m),e0=Physics.energy(m);let peak=0;for(let i=0;i<720;i++){Physics.step(m);peak=Math.max(peak,Math.abs(Physics.energy(m)-e0)/e0);assert.ok(Joints.maxError(m)<1e-8);near(b.angle-a.angle,.2,1e-8);}const p=momentum(m);near(p.x,p0.x);near(p.y,p0.y);near(p.L,p0.L,1e-7);assert.ok(peak<1e-5,`energy drift ${peak}`);
+// A point carriage adds no orientation constraint and lets the guide rotate freely.
+a=body('a');b={id:'b',type:'mass',name:'b',x:1,y:0,mass:1,vx:0,vy:0};m=scene([a,b],joint('a','b'));assert.equal(Joints.reference(m).rows.length,1);Physics.step(m);assert.ok(Number.isFinite(a.omega));
+// Locked endpoints at an incompatible normal separation must be rejected.
+a=body('a');a.fixed=true;b=body('b',0,1);b.fixed=true;m=scene([a,b],joint('a','b'));assert.throws(()=>Physics.prepare(m),/constraints cannot be satisfied/);
+// The spring-loaded rotating-guide preset remains conservative and is monitorable.
+m=run('sliderExample()');Physics.prepare(m);const initial=Physics.energy(m);peak=0;for(let i=0;i<1200;i++){Physics.step(m);peak=Math.max(peak,Math.abs(Physics.energy(m)-initial));}assert.ok(peak<1e-4,`preset energy error ${peak}`);near(Joints.maxError(m),0,1e-8);
+const frame={t:5,states:m.bodies.map(b=>({...b})),energy:Physics.energy(m),reactions:m.bars.map(l=>({id:l.id,...l.reaction}))};near(PlotAxes.value(m,frame,'bar:slider1:slide'),Joints.sliderGeometry(m.bars[0],m.bodies[0],m.bodies[1]).slide);near(PlotAxes.value(m,frame,'bar:slider1:normalError'),0);assert.ok(!AttachedMonitors.options(m,'slider1').some(o=>/:(length|tension|angle)$/.test(o.value)));near(AttachedMonitors.anchor(m,'slider1').x,m.bodies[1].x);
+// Axis/angle metadata survive validation; malformed or ambiguous moving guides do not.
+let raw=clone(run('sliderExample()'));near(validate(raw).bars[0].axisAngle,0);near(validate(raw).bars[0].referenceAngle,0);for(const key of ['axisAngle','referenceAngle']){raw=clone(run('sliderExample()'));raw.bars[0][key]=NaN;assert.throws(()=>validate(raw),/Invalid slider/);}raw=clone(run('sliderExample()'));delete raw.bodies[0].shape;assert.throws(()=>validate(raw),/solid for the guide/);
+assert.deepEqual(JSON.parse(fs.readFileSync(path.join(__dirname,'../examples/moving-guide-slider.json'))),clone(run('sliderExample()')));
+console.log('PASS: incline acceleration/normal reaction, ground reaction couple, rotating-guide Jacobian, free momentum/angular momentum/energy, point carriage, conflicts, spring-guide example, monitors and validation');

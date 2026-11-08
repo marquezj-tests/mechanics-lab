@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "name": "Moving-guide slider",
+  "gravityOn": true,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "guide",
+      "type": "mass",
+      "name": "Rotating guide",
+      "shape": "rectangle",
+      "width": 4,
+      "height": 0.15,
+      "mass": 2,
+      "x": 0,
+      "y": 0,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0.35,
+      "omega": 0,
+      "support": {
+        "kind": "pinned",
+        "x": 0,
+        "y": 0
+      },
+      "restitution": 1,
+      "friction": 0,
+      "inertia": 2.670416666666667
+    },
+    {
+      "id": "carriage",
+      "type": "mass",
+      "name": "Carriage",
+      "shape": "rectangle",
+      "width": 0.55,
+      "height": 0.45,
+      "mass": 1,
+      "x": 0.9393727128473789,
+      "y": 0.34289780745545134,
+      "vx": 0.46968635642368944,
+      "vy": 0.17144890372772567,
+      "angle": 0.35,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "inertia": 0.04208333333333335
+    }
+  ],
+  "bars": [
+    {
+      "id": "slider1",
+      "type": "bar",
+      "joint": "slider",
+      "name": "Slider 1",
+      "a": "guide",
+      "b": "carriage",
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "axisAngle": 0,
+      "referenceAngle": 0,
+      "length": 0,
+      "collideConnected": false
+    }
+  ],
+  "forces": [],
+  "springs": [
+    {
+      "id": "spring1",
+      "type": "spring",
+      "name": "Spring 1",
+      "a": "guide",
+      "b": "carriage",
+      "k": 6,
+      "rest": 1,
+      "damping": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "monitor": "slider1",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "sliderPosition",
+      "target": "slider1",
+      "variable": "bar:slider1:slide",
+      "offset": {
+        "x": 35,
+        "y": -70
+      },
+      "precision": 3,
+      "caption": ""
+    },
+    {
+      "id": "sliderForce",
+      "target": "slider1",
+      "variable": "bar:slider1:magnitude",
+      "offset": {
+        "x": 35,
+        "y": -20
+      },
+      "precision": 3,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": 0,
+    "y": 0,
+    "scale": 85
+  },
+  "solverPrecision": "high"
+}
