@@ -18,6 +18,8 @@ No installation, browser, build step, or network access is required. The runner 
 | Touch multi-selection, box selection, pan modes, group movement and recording preservation | touch-selection |
 | Energy/replay diagnostics, physical work/loss explanations, bar/string residuals | diagnostics |
 | Contacts, friction, elastic energy and momentum | collisions, elastic-collisions, lattice |
+| Off-center spring/damper geometry, torque, energy/momentum, reactions and replay | off-center-springs |
+| Spring attachment editing, rendering/picking, persistence, resizing and bilingual example | spring-attachments-ui |
 | Bars, supports, reaction forces and torque | bars, supports, forces, bridge, bridge-preset, bridge-fixed, support-example |
 | Strings, finite-radius routing, fixed and moving pulleys | strings, movable-pulleys |
 | Plot variables, multiple curves, CSV and moving readouts | plots, solids |

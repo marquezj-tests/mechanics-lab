@@ -33,12 +33,22 @@ Choose **Rectangle**, **Circle**, or **Triangle**, then click to place a body. C
 
 Select a solid to reveal its controls:
 
-- The center cross marks its uniform-density center of mass and is the attachment point for springs. Choose Spring and click the cross (or the body) to connect it.
+- The center cross marks its uniform-density center of mass. Choose Spring and click the cross for a center attachment, or another point on the solid for an off-center attachment.
 - Drag a square at a corner to resize about the center. Rectangles resize along their local axes; circles change radius; triangles and free polygons scale uniformly.
 - Drag an outer circular control to rotate about the center. Rotation snaps to 5° when snapping is on.
 - Drag the body to move it. Edit mass, initial rotation, and initial angular velocity in Properties. Rectangle dimensions and circle radius also have numerical inputs.
 
-Solids participate in the same spring and gravity simulation as point masses. Orientation is recorded for replay; angular readouts and CSV columns use the body’s rotation and angular velocity. Shapes, dimensions, and angular initial conditions are saved in JSON files. Center attachments exert no spring torque. Collisions can change angular velocity; off-center spring attachments are not implemented yet.
+Solids participate in the same spring and gravity simulation as point masses. Orientation is recorded for replay; angular readouts and CSV columns use the body’s rotation and angular velocity. Shapes, dimensions, and angular initial conditions are saved in JSON files. Center attachments exert no spring torque. Off-center springs, dampers, applied forces and collisions can change angular velocity.
+
+## Springs and dampers on rigid bodies
+
+Choose **Spring** and select two bodies or supports. On a solid, click near its center cross for a central connection or elsewhere on its surface for a local attachment. Point masses and support markers attach only at their centers. A new spring's natural length is the distance between its chosen attachment points. Selected/off-center attachments are shown as small pins; clicking the drawn spring selects it at its actual location.
+
+Properties provides **Attachment A/B x/y (m)** in each body's local coordinates. The attachments rotate with the body and scale when it is resized. Both elastic force and axial damping act along the line between those points and produce torque `r × F` about each center of mass. Damping uses attachment-point velocities, including `ω × r`. Its split impulse update accounts for rotational inertia, linear restraints, and coupled bar/string constraints; a string can release when the damper pulls inward. Internal spring/damper forces conserve total linear and angular momentum in an isolated system; damping removes mechanical energy.
+
+**Examples → Load off-center spring oscillator** (**Ejemplos → Cargar oscilador con resorte excéntrico**) loads a pinned beam and a spring attached at its right end. The beam starts rotated 25°; the undamped spring drives angular oscillation. Readouts show the beam angle and spring moment on the beam. Add damping in the spring properties to see rotational decay. The standalone scene is `examples/off-center-spring.json`.
+
+Spring length, extension, force, endpoint moments and angular impulse estimates use the actual rotating attachment geometry during simulation and replay. Moving readouts follow the attachment midpoint. Copy/paste, duplicate, undo, resizing, Save As and JSON reload retain local attachments. Existing version-1 files without attachment coordinates remain center-connected.
 
 ## Optional fixed plots
 
@@ -50,7 +60,7 @@ To compare energies, set X to **Time (s)** and the first Y to **Mechanical energ
 
 Choose **Readout monitor** in Builder and click a body, anchor, spring, bar, or force to attach a moving numeric label. Point masses start with x velocity, links with tension, and applied forces with force magnitude. In the component’s Properties, **On-canvas monitors** lets you choose any available component variable and press **Attach monitor**. You can attach multiple variables, change a monitor’s quantity or decimal precision, and remove individual labels.
 
-Readouts follow a body’s center, a link’s midpoint (including rotating off-center bar pins), or a force’s attachment point. Drag a label to change its offset from the component. Labels remain upright and use screen-sized text for readability while zooming. Leader lines identify the component, and labels stay within the visible canvas where possible.
+Readouts follow a body’s center, a link’s midpoint (including rotating off-center spring and bar attachments), or a force’s attachment point. Drag a label to change its offset from the component. Labels remain upright and use screen-sized text for readability while zooming. Leader lines identify the component, and labels stay within the visible canvas where possible.
 
 Attaching or repositioning labels preserves the current recording and playback. Labels display the selected replay frame’s values, including recorded bar reactions. They are saved with experiment files; old files load without them. Deleting a component also removes its monitors, including labels attached to links or forces removed with that body. Bar tension at time zero reads zero until a reaction has been measured by running or stepping.
 
@@ -151,6 +161,8 @@ Run **`node tests/run.cjs`** for the complete dependency-free suite. See [test c
 Run `node tests/energy.cjs` for long-run single/double/rigid pendulum energy, constraint-length precision, the supplied triangular pendulum, and time reversibility.
 
 `node tests/solids.cjs` also checks attached-monitor creation, variable values and units, moving anchors, dragging offsets without clearing recordings, replay, save/load, deletion cascades, and malformed configuration rejection.
+
+`node tests/off-center-springs.cjs` checks rotated attachment geometry, force/energy-gradient torque, rotational and constraint-aware damping, momentum and energy, fixed/pinned support reactions, unilateral string release, recorded measurements and legacy files. `node tests/spring-attachments-ui.cjs` checks builder placement, attachment fields, rendering/picking, monitor positions, resizing, copy/paste/save/undo and the bilingual example.
 
 Run `node tests/forces.cjs` for constant-force acceleration, applied torque, follower forces, spring equilibrium, support reactions and moments, centripetal force, impulses, momentum definitions, and reaction replay. Force editing and file compatibility are covered by `tests/solids.cjs`.
 

@@ -2,7 +2,8 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
 const html=fs.readFileSync(require('node:path').join(__dirname,'../index.html'),'utf8');
 const geometry=html.match(/const Geometry = \(\(\)=>\{[\s\S]*?\n\}\)\(\);/)[0];
 const axes=html.match(/const PlotAxes = \(\(\)=>\{[\s\S]*?\n\}\)\(\);/)[0];
-const PlotAxes=vm.runInNewContext(geometry+';'+axes+';PlotAxes');
+const springs=html.match(/const Springs = \(\(\)=>\{[\s\S]*?\n\}\)\(\);/)[0];
+const PlotAxes=vm.runInNewContext(springs+';'+geometry+';'+axes+';PlotAxes');
 const m={bodies:[{id:'a',name:'Anchor',type:'anchor',x:0,y:0},{id:'b:1',name:'Disk',type:'mass',shape:'circle',mass:2,radius:1,inertia:1,x:0,y:0,vx:0,vy:0,angle:0,omega:0}],springs:[{id:'s',name:'Spring',a:'a',b:'b:1',k:4,rest:1,damping:.5}],bars:[{id:'r',name:'Bar',a:'a',b:'b:1',localA:{x:0,y:0},localB:{x:1,y:0}}]};
 const frame={t:2,energy:30,states:[{id:'b:1',x:3,y:4,vx:3,vy:4,angle:Math.PI/2,omega:2}]};
 assert.equal(PlotAxes.options(m)[0].value,'time');assert.equal(PlotAxes.value(m,frame,'time'),2);assert.equal(PlotAxes.value(m,frame,'energy'),30);

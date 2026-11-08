@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "name": "Off-center spring oscillator",
+  "gravityOn": false,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "springAnchor",
+      "type": "anchor",
+      "name": "Spring support",
+      "x": 1,
+      "y": 2
+    },
+    {
+      "id": "beam",
+      "type": "mass",
+      "name": "Beam",
+      "shape": "rectangle",
+      "x": 0,
+      "y": 0,
+      "mass": 2,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0.4363323129985824,
+      "omega": 0,
+      "width": 2,
+      "height": 0.3,
+      "fixed": false,
+      "support": {
+        "kind": "pinned",
+        "x": 0,
+        "y": 0
+      },
+      "restitution": 1,
+      "friction": 0,
+      "inertia": 0.6816666666666666
+    }
+  ],
+  "bars": [],
+  "forces": [],
+  "springs": [
+    {
+      "id": "spring1",
+      "type": "spring",
+      "name": "Spring 1",
+      "a": "springAnchor",
+      "b": "beam",
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 1,
+        "y": 0
+      },
+      "k": 12,
+      "rest": 2,
+      "damping": 0
+    }
+  ],
+  "monitor": "spring1",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "beamAngle",
+      "target": "beam",
+      "variable": "body:beam:angle",
+      "offset": {
+        "x": -100,
+        "y": 60
+      },
+      "precision": 3,
+      "caption": "Rotation"
+    },
+    {
+      "id": "springMoment",
+      "target": "spring1",
+      "variable": "spring:spring1:momentB",
+      "offset": {
+        "x": 35,
+        "y": -25
+      },
+      "precision": 3,
+      "caption": ""
+    }
+  ],
+  "view": {
+    "x": 0.3,
+    "y": 0.7,
+    "scale": 85
+  },
+  "solverPrecision": "high"
+}
