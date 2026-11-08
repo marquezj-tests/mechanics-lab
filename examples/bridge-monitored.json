@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "name": "Bridge \u2014 support reactions and bar tensions",
+  "name": "Bridge — support reactions and bar tensions",
   "gravityOn": true,
   "gravity": 9.81,
   "snapGrid": true,
@@ -61,10 +61,10 @@
       "mass": 1,
       "vx": 0,
       "vy": 0,
-      "constraint": {
+      "support": {
+        "kind": "rollerX",
         "x": 2,
-        "y": 0,
-        "angle": 0
+        "y": 0
       }
     }
   ],

@@ -4,6 +4,7 @@ const code=html.slice(html.indexOf('const Geometry ='),html.indexOf('const copy=
 const validation=html.slice(html.indexOf('function validate(raw)'),html.indexOf("\n$('file').onchange"));
 const {Physics,Joints,PlotAxes,AttachedMonitors,validate}=vm.runInNewContext(code+';'+validation+';({Physics,Joints,PlotAxes,AttachedMonitors,validate})');
 const m=validate(JSON.parse(fs.readFileSync(path.join(__dirname,'../examples/bridge-monitored.json'),'utf8')));
+assert.equal(m.bodies.find(b=>b.id==='mass21').support.kind,'rollerX');assert.equal(m.bodies.find(b=>b.id==='mass21').constraint.angle,0);
 assert.equal(m.canvasMonitors.length,15);assert.equal(m.bars.length,9);
 Physics.prepare(m);for(let i=0;i<240;i++)Physics.step(m);
 const left=m.bodies.find(b=>b.id==='anchor4').supportReaction,right=m.bodies.find(b=>b.id==='mass21').supportReaction;

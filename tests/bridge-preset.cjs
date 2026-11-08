@@ -1,0 +1,24 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const {app,html}=require('./helpers/app.cjs');
+const {run,node,context}=app();
+assert.match(html,/<button id="bridgePreset"[^>]*>Load monitored bridge<\/button>/);
+context.bridgeFile=JSON.parse(fs.readFileSync(path.join(__dirname,'../examples/bridge-monitored.json'),'utf8'));
+node('bridgePreset').onclick();
+assert.equal(run('JSON.stringify(validate(initial))'),run('JSON.stringify(validate({...example(),...bridgeFile}))'),'embedded preset matches offline file');
+assert.equal(run('model.canvasMonitors.length'),15);assert.equal(run('model.bars.length'),9);
+assert.equal(run('body("mass21").support.kind'),'rollerX');assert.equal(run('body("mass21").constraint.angle'),0);
+run('for(let i=0;i<60;i++)advance();');assert.equal(run('tick'),240);
+assert.ok(run('Math.abs(body("anchor4").supportReaction.fy-29.62)<1e-6'));
+assert.ok(run('Math.abs(body("mass21").supportReaction.fy-39.43)<1e-6'));
+assert.ok(run('Math.abs(body("mass21").x-2)<1e-8&&Math.abs(body("mass21").y)<1e-8'));
+run('restoreFrame(0);reset();');assert.equal(run('body("mass21").support.kind'),'rollerX');
+const before=run('JSON.stringify(model)');node('clear').onclick();node('undo').onclick();assert.equal(run('JSON.stringify(initial)'),before);
+// The embedded example is translated when created, with fixed variable IDs.
+const es=app({language:null});es.node('bridgePreset').onclick();
+assert.match(es.run('model.name'),/^Puente/);assert.equal(es.run('body("mass21").name'),'Apoyo derecho');
+assert.equal(es.run('model.canvasMonitors.filter(m=>m.variable.startsWith("support:mass21:")).length'),3);
+assert.ok(es.run('model.canvasMonitors.filter(m=>m.variable.endsWith(":tension")).every(m=>m.caption==="Tracción")'));
+es.run('selected="mass21";properties();');assert.match(es.node('properties').innerHTML,/Apoyo móvil · X/);
+es.run('for(let i=0;i<4;i++)advance();draw();');assert.equal(es.run('tick'),16);
+assert.equal(es.run('supportExample().bodies[0].id'),'pinnedBeam','language never changes internal example IDs');
+console.log('PASS: bridge menu preset/file parity, explicit roller support, all 15 monitors, static reactions, replay/reset/undo and Spanish presentation');

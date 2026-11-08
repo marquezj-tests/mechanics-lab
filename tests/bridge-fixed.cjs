@@ -5,7 +5,7 @@ const validation=html.slice(html.indexOf('function validate(raw)'),html.indexOf(
 const {Physics,Joints,PlotAxes,AttachedMonitors,validate}=vm.runInNewContext(code+';'+validation+';({Physics,Joints,PlotAxes,AttachedMonitors,validate})');
 const load=file=>validate(JSON.parse(fs.readFileSync(path.join(__dirname,'../examples',file),'utf8')));
 const near=(a,b,tol=1e-7)=>assert.ok(Math.abs(a-b)<tol,`${a} != ${b}`);
-let m=load('bridge-monitored.json');delete m.bodies.find(b=>b.id==='mass21').constraint;
+let m=load('bridge-monitored.json');delete m.bodies.find(b=>b.id==='mass21').constraint;delete m.bodies.find(b=>b.id==='mass21').support;
 for(let i=0;i<120;i++)Physics.step(m);
 assert.ok(m.bodies.find(b=>b.id==='mass21').y<-.1,'free bridge on a pin rotates/falls');
 m=load('bridge-fixed-left.json');const positions=m.bodies.map(b=>({x:b.x,y:b.y}));

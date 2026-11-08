@@ -17,7 +17,7 @@ No installation, browser, build step, or network access is required. The runner 
 | Touch multi-selection, box selection, pan modes, group movement and recording preservation | touch-selection |
 | Energy/replay diagnostics, physical work/loss explanations, bar/string residuals | diagnostics |
 | Contacts, friction, elastic energy and momentum | collisions, elastic-collisions, lattice |
-| Bars, supports, reaction forces and torque | bars, supports, forces, bridge, bridge-fixed, support-example |
+| Bars, supports, reaction forces and torque | bars, supports, forces, bridge, bridge-preset, bridge-fixed, support-example |
 | Strings, finite-radius routing, fixed and moving pulleys | strings, movable-pulleys |
 | Plot variables, multiple curves, CSV and moving readouts | plots, solids |
 | Offline resources, icons, snap increments, Save As, failed imports, all example files and repeatability | workflows |

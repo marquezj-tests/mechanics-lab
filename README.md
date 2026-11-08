@@ -130,11 +130,11 @@ The earlier standard-pendulum solver lost approximately 8.9% of its swing energy
 
 ## Bridge example
 
-Open `examples/bridge-monitored.json` and run or step to see 15 moving readouts: Rx, Ry, and torque for the left pin and right horizontal slider, and signed tension for all nine bars. Positive bar values indicate tension; negative values indicate compression. Duplicate bar names in the source example were made unique. Geometry, masses, lengths, and loading are preserved.
+Choose **Examples → Load monitored bridge** (**Ejemplos → Cargar puente con monitores**), or open `examples/bridge-monitored.json`, and run or step to see 15 moving readouts: Rx, Ry, and torque for the left pin and right roller support (free in x, restrained in y), and signed tension for all nine bars. Positive bar values indicate tension; negative values indicate compression. Duplicate bar names in the source example were made unique. Geometry, masses, lengths, and loading are preserved.
 
 The support reaction is the **force exerted by the support on the structure**, including the supported node’s own weight. It is measured from momentum change minus the impulses of gravity, applied forces, links, springs, and contacts. Fixed-support torque is the balancing moment about its center; ideal point pins and freely rotating slider nodes carry no reaction couple. Fixed point supports clamp attached bars and include the clamping couples in their reaction torque. Support measurements are recorded for replay and available as plot axes and attached readouts.
 
-For this bridge the expected vertical reactions are 29.62 N at the left pin and 39.43 N at the right roller, with zero horizontal force and support torque. Run `node tests/bridge.cjs` to verify the reactions, overall force/moment balance, and monitor definitions.
+For this bridge the expected vertical reactions are 29.62 N at the left pin and 39.43 N at the right roller, with zero horizontal force and support torque. Run `node tests/bridge.cjs` to verify the reactions, overall force/moment balance, and monitor definitions. `node tests/bridge-preset.cjs` verifies the offline menu example matches the JSON file, retains the roller and all 15 monitors through reset/replay/undo, and loads correctly in Spanish.
 
 ## Verification
 
@@ -197,7 +197,7 @@ Run `node tests/support-example.cjs` to verify identical physical parameters, in
 
 ### Bridge with one fixed support
 
-Open `examples/bridge-fixed-left.json` for the monitored bridge with its right end free and its left support fixed. It uses the same masses, bars and loads as `bridge-monitored.json`. To build it yourself, remove the right support’s horizontal constraint and change the left support to **Fixed support**. The fixed point support now restrains both attached bars’ directions, making this triangulated bridge a cantilever. A pinned left support leaves the entire bridge free to rotate when the right support is removed.
+Open `examples/bridge-fixed-left.json` for the monitored bridge with its right end free and its left support fixed. It uses the same masses, bars and loads as `bridge-monitored.json`. To build it yourself, remove the right roller support (set Support to None) and change the left support to **Fixed support**. The fixed point support now restrains both attached bars’ directions, making this triangulated bridge a cantilever. A pinned left support leaves the entire bridge free to rotate when the right support is removed.
 
 For this loading the fixed support reaction is **69.05 N upward** and **236.58 N·m counterclockwise**, with zero horizontal force. The support-torque readout includes the bar clamping couples. Individual bars’ axial tensions are still available; their force vectors can also contain shear at clamped ends. Reaction moments are moments on the attached body about its center. This remains an ideal rigid-member model without elastic beam bending. Removing the fixed support releases the clamped directions. Reference directions persist in saved experiments, are updated when editing the geometry, and follow copy/paste. Removing a support or constraint also removes its now-unavailable support readouts, keeping the edited experiment reloadable.
 
