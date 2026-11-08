@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "name": "Ideal gear transmission",
+  "gravityOn": false,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "driver",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Driving gear",
+      "x": -1,
+      "y": 0,
+      "radius": 1,
+      "mass": 2,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "support": {
+        "kind": "pinned",
+        "x": -1,
+        "y": 0
+      },
+      "inertia": 1
+    },
+    {
+      "id": "driven",
+      "type": "mass",
+      "shape": "circle",
+      "name": "Driven gear",
+      "x": 2,
+      "y": 0,
+      "radius": 2,
+      "mass": 2,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 1,
+      "friction": 0,
+      "support": {
+        "kind": "pinned",
+        "x": 2,
+        "y": 0
+      },
+      "inertia": 4
+    }
+  ],
+  "bars": [
+    {
+      "id": "gear1",
+      "type": "bar",
+      "joint": "gear",
+      "name": "Gear 1",
+      "a": "driver",
+      "b": "driven",
+      "ratio": -0.5,
+      "phase": 0,
+      "localA": {
+        "x": 0,
+        "y": 0
+      },
+      "localB": {
+        "x": 0,
+        "y": 0
+      },
+      "length": 0,
+      "collideConnected": false
+    }
+  ],
+  "forces": [
+    {
+      "id": "driveTorque",
+      "type": "force",
+      "kind": "torque",
+      "name": "Driving torque",
+      "target": "driver",
+      "torque": 1,
+      "fx": 0,
+      "fy": 0,
+      "local": {
+        "x": 0,
+        "y": 0
+      },
+      "bodyFrame": false
+    }
+  ],
+  "springs": [],
+  "monitor": "gear1",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "omegaA",
+      "target": "driver",
+      "variable": "body:driver:omega",
+      "offset": {
+        "x": -120,
+        "y": 110
+      },
+      "precision": 3,
+      "caption": "ωA"
+    },
+    {
+      "id": "omegaB",
+      "target": "driven",
+      "variable": "body:driven:omega",
+      "offset": {
+        "x": 15,
+        "y": 145
+      },
+      "precision": 3,
+      "caption": "ωB"
+    },
+    {
+      "id": "gearTorqueA",
+      "target": "gear1",
+      "variable": "bar:gear1:momentA",
+      "offset": {
+        "x": -160,
+        "y": -165
+      },
+      "precision": 3,
+      "caption": "Torque on A"
+    },
+    {
+      "id": "gearTorqueB",
+      "target": "gear1",
+      "variable": "bar:gear1:momentB",
+      "offset": {
+        "x": 60,
+        "y": -105
+      },
+      "precision": 3,
+      "caption": "Torque on B"
+    }
+  ],
+  "view": {
+    "x": 0.8,
+    "y": 0,
+    "scale": 65
+  },
+  "solverPrecision": "high"
+}

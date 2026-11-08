@@ -114,8 +114,20 @@ Collision impulses include angular response and respect linear constraints. Conc
 - Distance monitors measure from the world origin. The energy readout and CSV energy column refer to the complete system.
 - Spring damping dissipates mechanical energy; this energy is not tracked as heat. Damping acts along each spring, rather than as ambient air resistance.
 - The fixed timestep is unsuitable for arbitrarily stiff springs or very small masses. Reduce stiffness or increase mass if motion becomes unstable. Numerical energy is approximate.
-- Point masses have no angular motion or collision geometry. Applied forces, strings and fixed/movable pulleys are implemented. Gears, motors, mathematical expressions and visual programming remain future work.
+- Point masses have no angular motion or collision geometry. Applied forces, strings and fixed/movable pulleys are implemented. Ideal gear transmissions are implemented; motors, mathematical expressions and visual programming remain future work.
 - JSON imports are validated and limited to 200 bodies, 400 each of springs/bars/strings/applied forces, and 2 MB.
+
+## Ideal gears
+
+Choose **Ideal gears** (**Engranajes ideales**) and click two solids, in order A then B. Their centers become the shaft attachments. Properties exposes the signed velocity ratio `r = ωB / ωA` and phase `θB − r θA`. Negative ratios turn in opposite directions; positive ratios turn in the same direction. Allowed magnitudes are 0.01 through 100. Two circles initialize the ratio to `−radiusA / radiusB`, limited to that range; other solid pairs start at −1. Subsequent resizing does not change the chosen ratio. Editing the ratio retains the current angles by recalculating phase; phase edits assemble on Run/Step. Angles and phase are unwrapped, so fractional ratios remain consistent over many revolutions. Rotating either solid in the editor drives its partner while preserving the constraint.
+
+This is a massless, lossless **angular transmission**, with no tooth geometry, backlash, slip, tooth contact forces or axle positioning constraint. Add pinned supports separately for stationary axles. Any solid shape can represent a shaft; translating a shaft does not move its partner. Linked solids ignore mutual collisions by default. A fixed shaft locks its partner's rotation; conflicting constraints stop playback. Incompatible initial angular velocities are projected once before the experiment begins, which can remove initial kinetic energy; choose compatible velocities for energy comparisons.
+
+Transmitted moments on A and B, angular impulses, powers and phase error are available in moving monitors and arbitrary plot axes/lines. Positive torque is counterclockwise on each shaft. The reactions satisfy `τA + r τB = 0`; `τA ωA + τB ωB = 0`, so the transmission does no net work. The modeled housing carries the balancing torque: unequal-ratio shafts alone need not conserve total angular momentum. Bearing forces and housing loads are not inferred. Gear CSV exports both torques, both powers and phase error, using recorded velocities during replay. Rewind/reset, copy/paste, undo and Save As/Open preserve the gear definition and monitors. Files use `joint: "gear"`, `ratio`, `phase` (radians) and centered local attachments in the shared `bars` collection.
+
+Choose **Examples → Load ideal gear transmission** (**Ejemplos → Cargar transmisión por engranajes**) or open `examples/ideal-gear-transmission.json`. Two pinned 2 kg disks of radii 1 m and 2 m have inertias 1 and 4 kg·m². A +1 N·m applied torque drives A through ratio −0.5: αA = 0.5 rad/s² and αB = −0.25 rad/s², with transmitted torques −0.5 and −1 N·m. Their kinetic energy equals the applied torque's work. Angular spokes make both rotations visible; four attached monitors show velocities and transmitted torques.
+
+`node tests/gears.cjs` checks these analytical accelerations/torques, conservation over multiple turns and signed ratios, a three-shaft train, fixed shafts, independent translation, initial velocity projection and validation. `node tests/gears-ui.cjs` covers creation, ratio/phase fields, joint-preserving edits, selection, clipboard/save/undo, recorded power/replay/CSV, plots and Spanish controls.
 
 ## General hinge joints
 
@@ -135,7 +147,7 @@ Only the edited mechanism is assembled; unrelated unfinished connections remain 
 
 `tests/joint-editing.cjs` verifies constraints after each intermediate pointer event, hinge rotation and resizing, bar/string limits, unequal-mass pointer tracking, roller guides, blocked mechanisms, inspector edits, disconnected mechanisms, support relocation, velocity preservation, undo/redo and the next simulation step.
 
-Hinges, moving-body sliders, welded joints, pure applied torques and separate static/kinetic friction are implemented. The next planned features are gears/motors, followed by safe formulas, visual programming and the remaining browser/device qualification.
+Hinges, moving-body sliders, welded joints, pure applied torques and separate static/kinetic friction are implemented. Ideal gear transmissions are also implemented. The next planned feature is motors, followed by safe formulas, visual programming and the remaining browser/device qualification.
 
 ## Sliders on moving bodies
 
