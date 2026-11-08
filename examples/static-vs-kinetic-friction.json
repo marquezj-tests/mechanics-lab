@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "name": "Static versus kinetic friction",
+  "gravityOn": true,
+  "gravity": 9.81,
+  "snapGrid": false,
+  "bodies": [
+    {
+      "id": "block1",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Below threshold · 4 N",
+      "x": -3,
+      "y": 1.5999,
+      "width": 1,
+      "height": 0.5,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 0,
+      "friction": 0.3,
+      "staticFriction": 0.6,
+      "kineticFriction": 0.3,
+      "inertia": 0.10416666666666667
+    },
+    {
+      "id": "track1",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Track 1",
+      "x": 0,
+      "y": 1.2000000000000002,
+      "width": 10,
+      "height": 0.3,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "fixed": true,
+      "restitution": 0,
+      "friction": 0.3,
+      "staticFriction": 0.6,
+      "kineticFriction": 0.3,
+      "inertia": 8.340833333333332
+    },
+    {
+      "id": "stop1",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Travel stop",
+      "x": 4.7,
+      "y": 1.7000000000000002,
+      "width": 0.3,
+      "height": 1,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "fixed": true,
+      "restitution": 0,
+      "friction": 0,
+      "staticFriction": 0,
+      "kineticFriction": 0,
+      "inertia": 0.09083333333333334
+    },
+    {
+      "id": "block2",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Above threshold · 7 N",
+      "x": -3,
+      "y": -1.6001,
+      "width": 1,
+      "height": 0.5,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "restitution": 0,
+      "friction": 0.3,
+      "staticFriction": 0.6,
+      "kineticFriction": 0.3,
+      "inertia": 0.10416666666666667
+    },
+    {
+      "id": "track2",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Track 2",
+      "x": 0,
+      "y": -2,
+      "width": 10,
+      "height": 0.3,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "fixed": true,
+      "restitution": 0,
+      "friction": 0.3,
+      "staticFriction": 0.6,
+      "kineticFriction": 0.3,
+      "inertia": 8.340833333333332
+    },
+    {
+      "id": "stop2",
+      "type": "mass",
+      "shape": "rectangle",
+      "name": "Travel stop",
+      "x": 4.7,
+      "y": -1.5,
+      "width": 0.3,
+      "height": 1,
+      "mass": 1,
+      "vx": 0,
+      "vy": 0,
+      "angle": 0,
+      "omega": 0,
+      "fixed": true,
+      "restitution": 0,
+      "friction": 0,
+      "staticFriction": 0,
+      "kineticFriction": 0,
+      "inertia": 0.09083333333333334
+    }
+  ],
+  "bars": [],
+  "forces": [
+    {
+      "id": "push1",
+      "type": "force",
+      "name": "Force 1",
+      "target": "block1",
+      "local": {
+        "x": 0,
+        "y": 0
+      },
+      "fx": 4,
+      "fy": 0,
+      "bodyFrame": false
+    },
+    {
+      "id": "push2",
+      "type": "force",
+      "name": "Force 2",
+      "target": "block2",
+      "local": {
+        "x": 0,
+        "y": 0
+      },
+      "fx": 7,
+      "fy": 0,
+      "bodyFrame": false
+    }
+  ],
+  "springs": [],
+  "monitor": "block2",
+  "monitorType": "xy",
+  "plotX": "time",
+  "plots": [],
+  "canvasMonitors": [
+    {
+      "id": "speed1",
+      "target": "block1",
+      "variable": "body:block1:vx",
+      "offset": {
+        "x": -65,
+        "y": -75
+      },
+      "precision": 3,
+      "caption": "vx"
+    },
+    {
+      "id": "friction1",
+      "target": "track1",
+      "variable": "support:track1:fx",
+      "offset": {
+        "x": 45,
+        "y": 25
+      },
+      "precision": 3,
+      "caption": "Friction on block"
+    },
+    {
+      "id": "speed2",
+      "target": "block2",
+      "variable": "body:block2:vx",
+      "offset": {
+        "x": -65,
+        "y": -75
+      },
+      "precision": 3,
+      "caption": "vx"
+    },
+    {
+      "id": "friction2",
+      "target": "track2",
+      "variable": "support:track2:fx",
+      "offset": {
+        "x": 45,
+        "y": 25
+      },
+      "precision": 3,
+      "caption": "Friction on block"
+    }
+  ],
+  "view": {
+    "x": 0,
+    "y": 0,
+    "scale": 55
+  },
+  "solverPrecision": "high"
+}
