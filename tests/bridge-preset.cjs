@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {app,html}=require('./helpers/app.cjs');
 const {run,node,context}=app();
-assert.match(html,/<button id="bridgePreset"[^>]*>Load monitored bridge<\/button>/);
+assert.match(html,/<button id="bridgePreset"[^>]*>Monitored bridge<\/button>/);
 context.bridgeFile=JSON.parse(fs.readFileSync(path.join(__dirname,'../examples/bridge-monitored.json'),'utf8'));
 node('bridgePreset').onclick();
 assert.equal(run('JSON.stringify(validate(initial))'),run('JSON.stringify(validate({...example(),...bridgeFile}))'),'embedded preset matches offline file');
