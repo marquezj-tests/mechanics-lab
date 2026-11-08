@@ -20,6 +20,7 @@ No installation, browser, build step, or network access is required. The runner 
 | Contacts, friction, elastic energy and momentum | collisions, elastic-collisions, lattice |
 | Off-center spring/damper geometry, torque, energy/momentum, reactions and replay | off-center-springs |
 | Spring attachment editing, rendering/picking, persistence, resizing and bilingual example | spring-attachments-ui |
+| Live geometry editing with joint/bar/string constraints, supports, blocked edits and pointer tracking | joint-editing |
 | General hinges: analytical motion, reactions, conservation, editing, persistence and bilingual example | hinges, hinges-ui |
 | Bars, supports, reaction forces and torque | bars, supports, forces, bridge, bridge-preset, bridge-fixed, support-example |
 | Strings, finite-radius routing, fixed and moving pulleys | strings, movable-pulleys |
