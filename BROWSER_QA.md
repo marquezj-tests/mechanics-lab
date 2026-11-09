@@ -24,3 +24,5 @@ For each target, record browser/OS versions, device and date. Open the single `i
 8. Run an undamped oscillator and elastic collision, then enable damping/friction/inelasticity. Check that units/readouts are legible and that physical energy loss is explained separately from numerical integration error.
 
 Modifier-free group selection and explicit pan controls are implemented and covered by headless gesture tests. Real-device touch delivery, layout and usability remain pending qualification.
+
+- Set Simulation limit to 1 s and verify an exact stop, then extend to 2 s and resume without clearing frames. Replay remains available. Check 1–600 s bounds, reject a limit before the latest recorded frame, then Reset and shorten. Save/reload the limit; test both languages and desktop/mobile input layouts. Try a long recording on the target device to assess memory and responsiveness.

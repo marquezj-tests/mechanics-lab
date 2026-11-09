@@ -1,0 +1,31 @@
+const assert=require('node:assert/strict');
+const {app,html}=require('./helpers/app.cjs');
+const {run,node}=app();
+assert.match(html,/<input id="simulationLimit"[^>]*min="1"[^>]*max="600"[^>]*step="1"/);
+assert.equal(Number(node('simulationLimit').value),120);
+const set=value=>{node('simulationLimit').value=String(value);node('simulationLimit').onchange();};
+run('replaceExperiment({...example(),bodies:[{id:"m",type:"mass",name:"Mass",mass:1,x:0,y:0,vx:.01,vy:0}],springs:[],bars:[],forces:[]});');
+set(1);assert.equal(run('initial.simulationLimit'),1);
+run('running=true;for(let i=0;i<60;i++)advance();');
+assert.equal(run('tick'),240);assert.equal(run('frames.at(-1).t'),1);assert.equal(run('frames.length'),61);assert.equal(run('running'),false);
+assert.match(node('toast').textContent,/Simulation limit reached/);
+run('advance();');assert.equal(run('frames.length'),61);
+const state=run('JSON.stringify({bodies:model.bodies,frames,tick,cursor})');set(121);
+assert.equal(run('JSON.stringify({bodies:model.bodies,frames,tick,cursor})'),state);
+run('for(let i=60;i<7260;i++)advance();');assert.equal(run('frames.at(-1).t'),121);assert.equal(run('tick'),121*240);
+run('restoreFrame(0);advance();');assert.equal(run('cursor'),1);assert.equal(run('frames[cursor].t'),1/60);
+set(120);assert.equal(run('model.simulationLimit'),121);assert.match(node('toast').textContent,/latest recorded state/);
+for(const value of ['',0,-1,1.5,601,'Infinity','NaN']){set(value);assert.equal(run('model.simulationLimit'),121);assert.equal(Number(node('simulationLimit').value),121);}
+set(600);run('restoreFrame(frames.length-1);tick=600*240-4;advance();');assert.equal(run('frames.at(-1).t'),600);assert.equal(run('tick'),144000);const n=run('frames.length');run('advance();');assert.equal(run('frames.length'),n);
+node('saveFilename').value='duration';node('saveForm').listeners.submit({preventDefault(){}});
+assert.equal(JSON.parse(run('downloads.at(-1).text')).simulationLimit,600);
+assert.equal(run('validate(JSON.parse(downloads.at(-1).text)).simulationLimit'),600);
+run('reset();');assert.equal(run('model.simulationLimit'),600);assert.equal(run('tick'),0);
+set(10);node('undo').onclick();assert.equal(run('model.simulationLimit'),600);node('redo').onclick();assert.equal(run('model.simulationLimit'),10);
+for(const bad of [null,0,-1,1.1,601,'120',Infinity,NaN]){run('globalThis.badLimit='+JSON.stringify(bad));assert.throws(()=>run('validate({...example(),simulationLimit:badLimit})'),/Invalid simulation limit/);}
+assert.equal(run('validate({...example(),simulationLimit:1}).simulationLimit'),1);
+assert.equal(run('validate({...example(),simulationLimit:600}).simulationLimit'),600);
+run('replaceExperiment(validate(example()));');assert.equal(Number(node('simulationLimit').value),120);
+run('changeLanguage("es");');set(0);assert.match(node('toast').textContent,/número entero/);
+assert.equal(run('I18n.text("Simulation limit (s)")'),'Límite de simulación (s)');
+console.log('PASS: duration bounds/defaults, exact stop, extension past 120 s, replay, shortening guard, save/load/reset/undo and Spanish feedback');
