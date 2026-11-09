@@ -25,10 +25,13 @@ node('spectrumHann').checked=false;node('spectrumHann').onchange();assert.ok(run
 node('spectrumMax').value='2';node('spectrumMax').onchange();assert.equal(Number(node('spectrumMax').value),2);node('spectrumMax').value='31';node('spectrumMax').onchange();assert.equal(Number(node('spectrumMax').value),30);
 node('spectrumCsv').onclick();const csv=run('downloads.at(-1)');assert.equal(csv.name,'Test-spectrum.csv');assert.match(csv.text,/frequency_Hz,"Amplitude: Mass · x \(m\)"/);assert.equal(csv.text.split('\n').length,514);
 run('p.lines[1].visible=true;openSpectra(p);');assert.equal(run('spectrumData.series.length'),2);assert.equal(run('spectrumData.series[1].result.amplitude.length'),513);
+run('model.calculations=[{id:"c",name:"Calculated",unit:"m"}];frames.forEach(f=>f.calculations=[{id:"c",value:2*f.states[0].x}]);p.y=p.lines[0].y="calculated:c";openSpectra(p);');assert.ok(run('Math.abs(spectrumData.series[0].result.amplitude[64]-4)<1e-5'));
+run('p.y=p.lines[0].y="body:m:x";model.calculations=[];');
 node('spectrumClose').onclick();assert.equal(node('spectrumDialog').open,false);
 run('p.x="body:m:x";syncUI();openSpectra(p);');assert.doesNotMatch(node('plotLayer').innerHTML,/plotSpectrum:test/);assert.match(node('toast').textContent,/time plots only/);
 run('p.x="time";p.lines.forEach(l=>l.visible=false);openSpectra(p);');assert.match(node('toast').textContent,/at least one plot line/);
 run('p.lines[0].visible=true;frames[8].t+=.01;openSpectra(p);');assert.match(node('toast').textContent,/uniformly sampled/);
+run('frames[8].t=NaN;openSpectra(p);');assert.match(node('toast').textContent,/uniformly sampled/);
 run('frames[8].t=8/60;frames[9].states[0].x=NaN;openSpectra(p);');assert.match(node('toast').textContent,/uniformly sampled/);
 run('changeLanguage("es");');assert.equal(run('I18n.text("Compute spectra")'),'Calcular espectros');assert.equal(run('I18n.text("Frequency spectra")'),'Espectros de frecuencia');
 console.log('PASS: FFT vs independent DFT, tone/DC/Nyquist amplitudes, Hann/padding, max recording, visible curves, time-only action, frozen recording/replay, zoom/CSV, errors and Spanish labels');
