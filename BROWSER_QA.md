@@ -28,3 +28,5 @@ Modifier-free group selection and explicit pan controls are implemented and cove
 - Set Simulation limit to 1 s and verify an exact stop, then extend to 2 s and resume without clearing frames. Replay remains available. Check 1–600 s bounds, reject a limit before the latest recorded frame, then Reset and shorten. Save/reload the limit; test both languages and desktop/mobile input layouts. Try a long recording on the target device to assess memory and responsiveness.
 
 - Plot mass 1 y versus x in the inverted double pendulum and run 120 s. The path should remain a thin circle, without an inward band as the recording grows. Resize the plot, reverse x/y, replay and export CSV; check two position curves versus time separately.
+
+- In a time plot, record the formula-driven oscillator, press FFT and zoom to 1 Hz. Confirm forcing/natural-frequency peaks with a long run, multiple visible curves, mean/Hann toggles, CSV bins, and Spanish/English labels. Verify insufficient-data and non-finite-formula feedback. Check that the recording/cursor are preserved and that FFT is absent from XY plots. Test dialog sizing and closing on mobile.

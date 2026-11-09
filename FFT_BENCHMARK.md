@@ -1,6 +1,6 @@
 # FFT feasibility benchmark
 
-The experiment supports **post-run spectra** and **live spectra for a few selected variables at 5–10 updates per second**. Recomputing every spectrum at each physics step is unnecessary with the current recording rate and can consume the integration budget. No spectrum feature has been added to the application by this benchmark.
+The experiment supports **post-run spectra** and **live spectra for a few selected variables at 5–10 updates per second**. Recomputing every spectrum at each physics step is unnecessary with the current recording rate and can consume the integration budget. The benchmark itself does not modify the simulator runtime. The subsequent on-demand implementation is documented in README.md; live updates remain a possible later feature.
 
 ## Method
 
